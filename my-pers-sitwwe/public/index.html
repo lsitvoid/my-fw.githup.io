@@ -1,0 +1,61 @@
+<!-- 3. public/index.html -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个性化空间</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 欢迎界面 -->
+    <div class="welcome-container">
+        <h1 class="welcome-text">欢迎</h1>
+    </div>
+    <div class="quote-list">
+    "代码是写给未来自己的情书" 
+    "像素是数字世界的粘土"
+    </div>
+
+    <!-- 抽屉导航 -->
+    <nav class="drawer" id="drawer">
+        <a href="#quotes" class="drawer-item">📜 语录集</a>
+        <a href="#game" class="drawer-item">🎮 游戏项目</a>
+        <a href="#custom" class="drawer-item">✨ 自定义</a>
+    </nav>
+
+    <!-- 内容区域 -->
+    <main class="content">
+        <section id="quotes" class="page">
+            <h2>📜 语录集</h2>
+            <div class="quotes-container">
+                <!-- 你的语录内容 -->
+                <blockquote>真正的智慧在于知道自己一无所知</blockquote>
+                <blockquote>代码是诗人写给机器的情书</blockquote>
+                
+                <!-- 添加更多语录 -->
+            </div>
+            
+        </section>
+
+        <section id="game" class="page">
+            <h2>🎮 游戏项目</h2>
+            <div class="project-card">
+                <h3>访仙</h3>
+                <p>使用godot开发的2D游戏</p>
+                <a href="/game-demo" target="_blank">还没有做</a>
+            </div>
+        </section>
+
+        <section id="custom" class="page">
+            <h2>✨ 自定义页面</h2>
+            <div class="custom-content">
+                <!-- 这里可以添加任何自定义内容 -->
+                <canvas id="particleCanvas"></canvas>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
