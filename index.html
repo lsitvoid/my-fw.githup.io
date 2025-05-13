@@ -4,12 +4,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>个性化空间</title>
+    <title>LIST的小宇宙</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- 原有右侧卡片代码保持不变 -->
+    <div class="sidebar-card">
+        <!-- 头像和导航内容 -->
+    
+    <!-- 右侧固定卡片 -->
+    <div class="sidebar-card">
+        <!-- 头像 -->
+        <img src="tupian/169959361.jpg" alt="用户头像" class="avatar">
+        
+        <!-- 用户名 -->
+        <h3 class="username">LSIT的博客</h3>
+ 
+        <!-- 导航卡片 -->
+        <div class="nav-card">
+            <p class="nav-title">界面一</p>
+        </div>
+        <div class="nav-card">
+            <p class="nav-title">界面二</p>
+        </div>
+        <div class="nav-card active">
+            <p class="nav-title">界面三</p>
+        </div>
+    </div>
+    </div>
+
+    <!-- 左侧功能卡片 -->
+    <div class="function-card">
+        <div class="function-item" data-action="toggle-theme">
+            <!-- <img src="https://via.placeholder.com/24" alt="功能图标"> -->
+            <span>切换主题</span>
+            <div class="function-tooltip">这是功能一的详细说明</div>
+        </div>
+        <div class="function-item" data-action="focus-search">
+            <!-- <img src="https://via.placeholder.com/24" alt="功能图标"> -->
+            <span>快速搜索</span>
+            <div class="function-tooltip">这是功能二的详细说明</div>
+        </div>
+        <div class="function-item">
+            <!-- <img src="https://via.placeholder.com/24" alt="功能图标"> -->
+            <span>功能三</span>
+            <div class="function-tooltip">这是功能三的详细说明</div>
+        </div>
+    </div>
+
     <!-- 欢迎界面 -->
-    <div class="welcome-container">
+    <!-- <div class="welcome-container"> -->
+    <div class="welcome-container" src="tupian/3.webp">
+    
         <h1 class="welcome-text">欢迎</h1>
     </div>
     <div class="quote-list">
@@ -51,11 +97,26 @@
         <section id="custom" class="page">
             <h2>✨ 小屋</h2>
             <div class="custom-content">
-                <p>铃兰小姐是我们的光</p>
+                <blockquote>铃兰小姐是我们的光</blockquote>
+                <img src="tupian/1.webp">
+                <img src="tupian/2.webp">
+
                 <!-- <canvas id="particleCanvas"></canvas> -->
             </div>
         </section>
     </main>
+
+    
+ 
+    <!-- 新增左下角版权信息 -->
+    <div class="copyright-box">
+        <p>© LSIT的博客</p>
+        <p>
+            <a href="https://beian.miit.gov.cn/" target="_blank">图片均来自网络</a>
+            <br>
+            <a href="mailto:contact@example.com"></a>
+        </p>
+    </div>
 
     <script src="script.js"></script>
 </body>

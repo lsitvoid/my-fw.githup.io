@@ -39,6 +39,38 @@ document.querySelectorAll('.drawer-item').forEach(item => {
     });
 });
 
+// 功能按钮事件处理
+        document.querySelector('.function-card').addEventListener('click', (e) => {
+            const target = e.target.closest('.function-item');
+            if (!target) return;
+ 
+            const action = target.dataset.action;
+            const searchInput = document.querySelector('.search-input');
+ 
+            switch(action) {
+                case 'toggle-theme':
+                    document.body.classList.toggle('dark-mode');
+                    break;
+                case 'focus-search':
+                    searchInput.focus();
+                    break;
+                case 'show-alert':
+                    alert('这是一个功能演示提示！');
+                    break;
+            }
+        });
+ 
+        // 搜索框回车事件
+        document.querySelector('.search-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const query = e.target.value.trim();
+                if (query) {
+                    alert(`正在搜索：${query}`);
+                    // 这里可以添加实际搜索逻辑
+                }
+            }
+        });
+
 // 自定义页面粒子效果（可选）
 const canvas = document.getElementById('particleCanvas');
 const ctx = canvas.getContext('2d');
