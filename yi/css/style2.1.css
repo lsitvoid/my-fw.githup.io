@@ -1,0 +1,186 @@
+* {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            background: #f0f2f5;
+            font-family: Arial, sans-serif;
+        }
+
+        /* 左侧卡片容器 */
+        .card-container {
+            width: 75%;
+            padding: 20px;
+        }
+
+        /* 导航标签栏 */
+        /* .tab-nav {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 10px 0;
+            margin-bottom: 20px;
+            position: relative;
+        } */
+
+        .tab-nav {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 10px 0;
+            margin-bottom: 20px;
+            position: relative;
+            scrollbar-width: thin;
+            scrollbar-color: #ccc transparent;
+        }
+ 
+        .tab-nav::-webkit-scrollbar {
+            height: 4px;
+        }
+ 
+        .tab-nav::-webkit-scrollbar-track {
+            background: transparent;
+        }
+ 
+        .tab-nav::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 2px;
+        }
+ 
+        .tab-item {
+            padding: 8px 16px;
+            background: white;
+            border-radius: 20px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s;
+            flex-shrink: 0;
+            border: 2px solid transparent;
+        }
+ 
+        .tab-item.active {
+            background: #007bff;
+            color: white;
+            border-color: #0056b3;
+        }
+ 
+        /* 卡片内容 */
+        .card-content {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            min-height: 300px;
+        }
+ 
+        /* 内容区块 */
+        .content-section {
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+        }
+ 
+        .content-section.active {
+            display: block;
+        }
+ 
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 隐藏默认滚动条 */
+        .tab-nav::-webkit-scrollbar {
+            height: 0;
+        }
+
+        .tab-item {
+            padding: 8px 16px;
+            background: white;
+            border-radius: 20px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s;
+        }
+
+        .tab-item.active {
+            background: #007bff;
+            color: white;
+        }
+
+        /* 左右箭头按钮 */
+        /* .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.8);
+            padding: 8px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+        } */
+
+        .left-arrow { left: 10px; }
+        .right-arrow { right: 10px; }
+
+        /* 卡片内容 */
+        .card-content {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            min-height: 300px;
+        }
+
+        /* 右侧个人信息栏 */
+        .profile-container {
+            width: 25%;
+            padding: 20px;
+            background: white;
+            position: relative;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: block;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 15px 0;
+        }
+
+        .social-links img {
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .social-links img:hover {
+            transform: scale(1.1);
+        }
+
+        /* 功能盒子 */
+        .feature-box {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+
+        .feature-box:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }

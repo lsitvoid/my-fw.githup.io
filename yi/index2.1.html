@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>胡言乱语</title>
+    <link rel="stylesheet" href="css/style2.1.css">
+</head>
+<body>
+    <!-- 左侧卡片区域 -->
+    <div class="card-container">
+        <div class="tab-nav" id="tabNav">
+            <!-- <div class="nav-arrow left-arrow" onclick="scrollNav(-1)">‹</div> -->
+            <!-- <div class="tab-item active" onclick="openTab(event, 'tab1')">页面1</div>
+            <div class="tab-item" onclick="openTab(event, 'tab2')">页面2</div>
+            <div class="tab-item" onclick="openTab(event, 'tab3')">页面3</div>
+            <div class="tab-item">页面4</div>
+            <div class="tab-item">页面5</div> -->
+            <!-- <div class="nav-arrow right-arrow" onclick="scrollNav(1)">›</div> -->
+            <div class="tab-item active" data-target="peace">世界和平</div>
+            <div class="tab-item" data-target="hello">你好世界</div>
+            <div class="tab-item" data-target="page3">页面3</div>
+            <div class="tab-item" data-target="page4">页面4</div>
+            <div class="tab-item" data-target="page5">页面5</div>
+        </div>
+        
+        <!-- <div class="card-content">
+             卡片内容 -->
+            <!--<h2>卡片内容区域</h2>
+            <p>这里放置具体内容...</p>
+        </div> -->
+
+        <!-- <div id="tab1" class="tab-content active">
+                <h2>卡片 1</h2>
+                <p>这里是第一个卡片的内容...</p>
+            </div>
+            <div id="tab2" class="tab-content">
+                <h2>卡片 2</h2>
+                <p>这里是第二个卡片的内容...</p>
+            </div>
+            <div id="tab3" class="tab-content">
+                <h2>卡片 3</h2>
+                <p>这里是第三个卡片的内容...</p>
+            </div> -->
+    <!-- </div> -->
+
+    <div class="card-content">
+            <!-- 内容区块 -->
+            <div id="peace" class="content-section active">
+                <h2>世界和平主题</h2>
+                <p>构建人类命运共同体，促进全球和平发展...</p>
+                <img src="tupian/5.jpg" alt="图片" style="width: 100%; margin-top: 15px; border-radius: 8px;">
+            </div>
+ 
+            <div id="hello" class="content-section">
+                <h2>你好世界</h2>
+                <p>探索编程世界，从Hello World开始！</p>
+                <pre><code>print("Hello World!")</code></pre>
+                <img src="tupian/4.jpg" alt="图片" style="width: 60%; margin: 15px 0; border-radius: 8px;">
+            </div>
+ 
+            <div id="page3" class="content-section">
+                <h2>页面3内容</h2>
+                <p>这里是页面3的预留内容...</p>
+            </div>
+ 
+            <div id="page4" class="content-section">
+                <h2>页面4内容</h2>
+                <p>这里是页面4的预留内容...</p>
+            </div>
+ 
+            <div id="page5" class="content-section">
+                <h2>页面5内容</h2>
+                <p>这里是页面5的预留内容...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 右侧个人信息栏 -->
+    <div class="profile-container">
+        <img src="../tupian/169959361.jpg" alt="头像" class="avatar">
+        <h2 style="text-align: center;">LIST</h2>
+        
+        <div class="social-links">
+            <a href="https://space.bilibili.com/" target="_blank">
+                <img src="https://www.bilibili.com/favicon.ico" alt="B站">
+            </a>
+            <a href="https://github.com/" target="_blank">
+                <img src="https://github.com/favicon.ico" alt="GitHub">
+            </a>
+            <!-- <a href="https://qq.com/" target="_blank">
+                <img src="qq.png" alt="QQ"> -->
+            </a>
+        </div>
+
+        <div class="feature-box">
+            <h3>功能1</h3>
+            <p>功能描述...</p>
+        </div>
+        <div class="feature-box">
+            <h3>功能2</h3>
+            <p>功能描述...</p>
+        </div>
+        <div class="feature-box">
+            <h3>功能3</h3>
+            <p>功能描述...</p>
+        </div>
+    </div>
+
+    <script>
+
+         // 初始化内容切换
+        document.querySelectorAll('.tab-item').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // 更新标签样式
+                document.querySelector('.tab-item.active')?.classList.remove('active');
+                tab.classList.add('active');
+ 
+                // 获取目标内容ID
+                const targetId = tab.dataset.target;
+ 
+                // 隐藏所有内容
+                document.querySelectorAll('.content-section').forEach(content => {
+                    content.classList.remove('active');
+                });
+ 
+                // 显示目标内容
+                document.getElementById(targetId).classList.add('active');
+            });
+        });
+
+        // // 标签切换功能
+        // function openTab(evt, tabName) {
+        //     const tabContents = document.getElementsByClassName("tab-content");
+        //     const tabBtns = document.getElementsByClassName("tab-item");
+            
+        //     for (let content of tabContents) {
+        //         content.classList.remove("active");
+        //     }
+        //     for (let btn of tabBtns) {
+        //         btn.classList.remove("active");
+        //     }
+
+        //     document.getElementById(tabName).classList.add("active");
+        //     evt.currentTarget.classList.add("active");
+        // }
+
+        // // 动态添加标签
+        // let tabCount = 3;
+        // function addTab() {
+        //     tabCount++;
+        //     const tabHeader = document.getElementById('tabHeader');
+        //     const newTabBtn = document.createElement('button');
+        //     newTabBtn.className = 'tab-item';
+        //     newTabBtn.textContent = tabCount;
+        //     newTabBtn.onclick = function(e) { openTab(e, `tab${tabCount}`) };
+            
+        //     const newTabContent = document.createElement('div');
+        //     newTabContent.id = `tab${tabCount}`;
+        //     newTabContent.className = 'tab-content';
+        //     newTabContent.innerHTML = `<h2>卡片 ${tabCount}</h2><p>这里是第${tabCount}个卡片的内容...</p>`;
+
+        //     tabHeader.appendChild(newTabBtn);
+        //     document.querySelector('.tab-section').appendChild(newTabContent);
+        // }
+
+        // 导航滚动功能
+        function scrollNav(direction) {
+            const nav = document.getElementById('tabNav');
+            const scrollAmount = direction * 200; // 每次滚动200px
+            nav.scrollLeft += scrollAmount;
+        }
+
+        // 可选：添加触摸滑动支持（移动端）
+        let touchStartX = 0;
+        document.getElementById('tabNav').addEventListener('touchstart', e => {
+            touchStartX = e.touches[0].clientX;
+        });
+
+        document.getElementById('tabNav').addEventListener('touchend', e => {
+            const touchEndX = e.changedTouches[0].clientX;
+            const diff = touchStartX - touchEndX;
+            if (Math.abs(diff) > 50) {
+                scrollNav(diff > 0 ? -1 : 1);
+            }
+        });
+    </script>
+</body>
+</html>
