@@ -180,6 +180,8 @@
             transition: all 0.3s;
         }
 
+        
+
         .feature-box:hover {
             background: #e9ecef;
             transform: translateX(5px);
