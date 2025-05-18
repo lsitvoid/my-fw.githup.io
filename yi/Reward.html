@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>打赏界面</title>
+    <style>
+        :root {
+            --primary-color: #ff6b6b;
+            --secondary-color: #ffe66d;
+            --bg-color: #f8f9fa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Live2D容器样式 */
+        #live2d-container {
+            position: fixed;
+            width: 300px;
+            height: 500px;
+            right: 20px;
+            bottom: 20px;
+            z-index: 100;
+        }
+
+        /* 打赏面板样式 */
+        .reward-panel {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            transform: translateY(50px);
+            opacity: 0;
+            animation: slideIn 0.6s forwards;
+            z-index: 200;
+        }
+
+        .reward-title {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.8em;
+        }
+
+        .reward-images {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .reward-image {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: transform 0.3s;
+            border: 3px solid transparent;
+        }
+
+        .reward-image:hover {
+            transform: translateY(-5px);
+            border-color: var(--secondary-color);
+        }
+
+        .reward-qrcode {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            z-index: 300;
+        }
+
+        .reward-qrcode.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* 粒子背景效果 */
+        .particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <!-- 粒子背景 -->
+    <canvas class="particle-canvas"></canvas>
+
+    <!-- Live2D容器 -->
+    <div id="live2d-container"></div>
+
+    <!-- 打赏面板 -->
+    <div class="reward-panel">
+        <h2 class="reward-title">支持作者 ❤️</h2>
+        <div class="reward-images">
+            <img src="tupian/kgwx.jpeg" alt="打赏喵" class="reward-image" data-qrcode="alipay.png">
+        </div>
+    </div>
+
+    <!-- 二维码弹窗 -->
+    <div class="reward-qrcode">
+        <img src="tupian/kgwx.jpeg" alt="支付二维码" id="qrcode-img" style="width: 200px; margin-bottom: 1rem;">
+        <p>开个玩笑</p>
+        <button onclick="closeQRCode()">关闭</button>
+    </div>
+
+    <!-- 引入Live2D库 -->
+    <script src="https://cdn.jsdelivr.net/npm/pixi.js@6.5.8/dist/pixi.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display@0.1.0/dist/pixi-live2d-display.min.js"></script>
+
+    <script>
+        // 初始化Live2D看板娘
+        async function initLive2D() {
+            const app = new PIXI.Application({
+                width: 300,
+                height: 500,
+                transparent: true
+            });
+            
+            document.getElementById('live2d-container').appendChild(app.view);
+
+            const model = await Live2DModel.from('https://cdn.jsdelivr.net/npm/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json');
+            app.stage.addChild(model);
+
+            // 添加点击交互
+            model.on('pointertap', () => {
+                showMessage('感谢支持！ ヽ(✿ﾟ▽ﾟ)ノ');
+                createConfetti();
+            });
+        }
+
+        // 显示消息弹窗
+        function showMessage(text) {
+            const msg = document.createElement('div');
+            msg.style.position = 'fixed';
+            msg.style.top = '20px';
+            msg.style.left = '50%';
+            msg.style.transform = 'translateX(-50%)';
+            msg.style.padding = '10px 20px';
+            msg.style.background = 'var(--primary-color)';
+            msg.style.color = 'white';
+            msg.style.borderRadius = '20px';
+            msg.style.zIndex = '400';
+            msg.textContent = text;
+            
+            document.body.appendChild(msg);
+            setTimeout(() => msg.remove(), 2000);
+        }
+
+        // 打赏图片点击处理
+        document.querySelectorAll('.reward-image').forEach(img => {
+            img.addEventListener('click', (e) => {
+                const qrcode = document.getElementById('qrcode-img');
+                qrcode.src = `https://via.placeholder.com/300/${getRandomColor()}/FFFFFF?text=${e.target.dataset.qrcode}`;
+                document.querySelector('.reward-qrcode').classList.add('active');
+            });
+        });
+
+        // 关闭二维码弹窗
+        function closeQRCode() {
+            document.querySelector('.reward-qrcode').classList.remove('active');
+        }
+
+        // 粒子背景效果
+        const particles = [];
+        const canvas = document.querySelector('.particle-canvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 2 - 1;
+                this.speedY = Math.random() * 2 - 1;
+                this.opacity = Math.random() * 0.5 + 0.3;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.fillStyle = `hsla(200, 100%, 50%, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 50; i++) {
+            particles.push(new Particle());
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+
+        animateParticles();
+
+        // 初始化所有功能
+        initLive2D();
+
+        // 随机颜色生成
+        function getRandomColor() {
+            return Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+        }
+
+        // 创建彩带效果
+        function createConfetti() {
+            const duration = 1.5 * 1000;
+            const animationEnd = Date.now() + duration;
+            const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEEAD'];
+
+            (function frame() {
+                const timeLeft = animationEnd - Date.now();
+                const progress = timeLeft / duration;
+                
+                if (progress < 0) return;
+
+                const confetti = document.createElement('div');
+                confetti.style.position = 'fixed';
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.top = `${-20}%`;
+                confetti.style.width = '10px';
+                confetti.style.height = '20px';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                confetti.style.opacity = progress;
+                
+                document.body.appendChild(confetti);
+
+                setTimeout(() => confetti.remove(), duration);
+                requestAnimationFrame(frame);
+            })();
+        }
+    </script>
+</body>
+</html>
