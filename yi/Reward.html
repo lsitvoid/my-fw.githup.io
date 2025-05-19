@@ -152,7 +152,7 @@
             
             document.getElementById('live2d-container').appendChild(app.view);
 
-            const model = await Live2DModel.from('https://cdn.jsdelivr.net/npm/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json');
+            const model = await Live2DModel.from('https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json');
             app.stage.addChild(model);
 
             // 添加点击交互
