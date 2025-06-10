@@ -152,7 +152,7 @@
             
             document.getElementById('live2d-container').appendChild(app.view);
 
-            const model = await Live2DModel.from('https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json');
+            const model = await Live2DModel.from('https://fastly.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/waifu-tips.json');
             app.stage.addChild(model);
 
             // 添加点击交互
