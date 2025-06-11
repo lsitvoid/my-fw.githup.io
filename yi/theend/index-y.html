@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>幻境之扉 - 个人主页</title>
+    <link rel="stylesheet" href="eecss/y.css">
+</head>
+<body>
+    <div id="stars"></div>
+    
+    <!-- 导航栏 -->
+    <nav class="nav-container">
+        <div class="nav-content">
+            <div class="logo">🌌 幻境之扉</div>
+            <div class="nav-links">
+                <a href="#home" class="nav-link">首页</a>
+                <a href="#about" class="nav-link">关于</a>
+                <a href="#portfolio" class="nav-link">作品</a>
+                <a href="#contact" class="nav-link">联系</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主展示区 -->
+    <section class="hero-section" id="home">
+        <h1 class="hero-title">欢迎来到数字幻境</h1>
+        <p class="hero-subtitle">探索科技与艺术的交汇点，见证数字时代的创意革命</p>
+        <a href="#about" class="cta-button">发现更多</a>
+    </section>
+
+    <!-- 玻璃卡片内容区 -->
+    <div class="glass-card" id="about">
+        <h2>关于我</h2>
+        <p>我是数字世界的造梦者，擅长用代码编织视觉奇迹，用设计诠释未来美学。在这里，您将见证：</p>
+        <ul>
+            <li>前沿的Web交互设计</li>
+            <li>沉浸式3D视觉体验</li>
+            <li>智能化的动态界面</li>
+        </ul>
+    </div>
+
+    <script>
+        // 星空粒子特效
+        function createStars() {
+            const stars = document.getElementById('stars');
+            const colors = ['#ff6b6b', '#4ecdc4', '#ffe66d', '#a0e7e5'];
+            
+            for(let i = 0; i < 100; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.top = Math.random() * 100 + 'vh';
+                particle.style.width = Math.random() * 3 + 2 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.animationDuration = Math.random() * 6 + 4 + 's';
+                stars.appendChild(particle);
+            }
+        }
+
+        // 滚动时导航栏渐变效果
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('.nav-container');
+            nav.style.backgroundColor = window.scrollY > 50 
+                ? 'rgba(0, 0, 0, 0.8)' 
+                : 'transparent';
+        });
+
+        // 初始化粒子特效
+        createStars();
+    </script>
+</body>
+</html>
