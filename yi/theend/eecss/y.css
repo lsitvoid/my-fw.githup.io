@@ -7,12 +7,11 @@
         body {
               background: 
                 linear-gradient(-45deg, #0a0a2380, #1b1b3280, #2a2a4080),  /* 保留原渐变并降低透明度 */
-                url('../tupian/1.webp');  /* 示例图片链接 */
+                url('.../tupian/1.webp');  /* 示例图片链接 */
             background-size: cover, cover;  /* 保持图片比例填充 */
             background-position: center;
             background-attachment: fixed;    /* 固定背景实现视差效果 */
             background-blend-mode: overlay;  /* 混合模式增强层次感 */
-            /* 原有其他样式保持不变 */
             animation: gradientBG 15s ease infinite;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow-x: hidden;
@@ -175,3 +174,4 @@
             0% { transform: translateY(0) scale(0.5); opacity: 0.8; }
             100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
         }
+
