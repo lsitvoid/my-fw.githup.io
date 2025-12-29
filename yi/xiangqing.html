@@ -1,0 +1,653 @@
+<!DOCTYPE html><html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>魔法师的课程内容</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8fafc;
+            color: #334155;
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .container {
+            display: flex;
+            width: 100%;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        
+        /* 左侧内容区域样式 */
+        .content-section {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            background-color: #ffffff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+        }
+        
+        .content-section h1 {
+            color: #1e293b;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .content-section h2 {
+            color: #334155;
+            margin: 1.8rem 0 1rem 0;
+        }
+        
+        .content-section p {
+            margin-bottom: 1.2rem;
+        }
+        
+        .content-section ul, .content-section ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1.2rem;
+        }
+        
+        /* 代码块样式 */
+        .code-section {
+            margin: 1.5rem 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 1.2rem;
+            background-color: #1e293b;
+            color: #f8fafc;
+            font-weight: 600;
+        }
+        
+        .copy-btn {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        
+        .copy-btn:hover {
+            background-color: #2563eb;
+        }
+        
+        .copy-btn.copied {
+            background-color: #10b981;
+        }
+        
+        pre {
+            margin: 0;
+            padding: 0;
+            overflow-x: auto;
+        }
+        
+        code {
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+        }
+        
+        .hljs {
+            padding: 1.2rem !important;
+            line-height: 1.5;
+        }
+        
+        /* 右侧个人信息卡片样式 */
+        .profile-section {
+            width: 350px;
+            background-color: #ffffff;
+            padding: 2rem;
+            box-shadow: -5px 0 20px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid #e2e8f0;
+        }
+        
+        .profile-card {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            color: white;
+            box-shadow: 0 10px 25px rgba(30, 41, 59, 0.2);
+            text-align: center;
+            position: sticky;
+            top: 2rem;
+        }
+        
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #3b82f6;
+            margin: 0 auto 1.5rem;
+            background-color: #475569;
+        }
+        
+        .profile-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .profile-title {
+            color: #cbd5e1;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+        
+        .profile-bio {
+            color: #e2e8f0;
+            font-size: 0.95rem;
+            margin-bottom: 1.8rem;
+            line-height: 1.6;
+        }
+        
+        .profile-contacts {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-bottom: 2rem;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: #e2e8f0;
+            font-size: 0.9rem;
+        }
+        
+        .contact-icon {
+            color: #60a5fa;
+            font-size: 1.1rem;
+            width: 20px;
+        }
+        
+        .profile-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        
+        .skill-tag {
+            background-color: rgba(59, 130, 246, 0.2);
+            color: #93c5fd;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 1100px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .profile-section {
+                width: 100%;
+                border-left: none;
+                border-top: 1px solid #e2e8f0;
+                padding: 1.5rem;
+            }
+            
+            .profile-card {
+                position: static;
+                max-width: 600px;
+                margin: 0 auto;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .content-section {
+                padding: 1.5rem;
+            }
+            
+            .profile-section {
+                padding: 1rem;
+            }
+            
+            .profile-card {
+                padding: 1.5rem;
+            }
+            
+            .profile-img {
+                width: 100px;
+                height: 100px;
+            }
+        }
+        
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .code-section, .profile-card {
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        /* 内容区域样式 */
+        .content-intro {
+            background-color: #f0f9ff;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            border-left: 4px solid #3b82f6;
+        }
+        
+        .content-note {
+            background-color: #fef3c7;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #f59e0b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 左侧内容展示区域 -->
+        <section class="content-section">
+            <h1>JavaScript 数据结构与算法示例</h1>
+            
+            <div class="content-intro">
+                <p>本页面展示一些常用的JavaScript数据结构与算法实现，这些代码可以直接复制用于学习。右侧是我的个人信息卡片。</p>
+            </div>
+            
+            <h2>1. 快速排序算法</h2>
+            <p>快速排序是一种高效的排序算法，采用分治策略。平均时间复杂度为 O(n log n)。</p>
+            
+            <div class="code-section">
+                <div class="code-header">
+                    <span>快速排序实现 - JavaScript</span>
+                    <button class="copy-btn" data-target="code1">
+                        <i class="far fa-copy"></i> 复制代码
+                    </button>
+                </div>
+                <pre><code id="code1" class="language-javascript">function quickSort(arr) {
+  if (arr.length <= 1) {
+    return arr;
+  }
+  
+  const pivot = arr[arr.length - 1];
+  const left = [];
+  const right = [];
+  
+  for (let i = 0; i < arr.length - 1; i++) {
+    if (arr[i] < pivot) {
+      left.push(arr[i]);
+    } else {
+      right.push(arr[i]);
+    }
+  }
+  
+  return [...quickSort(left), pivot, ...quickSort(right)];
+}
+
+// 使用示例
+const unsortedArray = [64, 34, 25, 12, 22, 11, 90];
+console.log("原始数组:", unsortedArray);
+console.log("排序后:", quickSort(unsortedArray));</code></pre>
+            </div>
+            
+            <h2>2. 二分查找算法</h2>
+            <p>二分查找是一种在有序数组中查找特定元素的搜索算法，时间复杂度为 O(log n)。</p>
+            
+            <div class="code-section">
+                <div class="code-header">
+                    <span>二分查找实现 - JavaScript</span>
+                    <button class="copy-btn" data-target="code2">
+                        <i class="far fa-copy"></i> 复制代码
+                    </button>
+                </div>
+                <pre><code id="code2" class="language-javascript">function binarySearch(arr, target) {
+  let left = 0;
+  let right = arr.length - 1;
+  
+  while (left <= right) {
+    const mid = Math.floor((left + right) / 2);
+    
+    if (arr[mid] === target) {
+      return mid; // 找到目标，返回索引
+    }
+    
+    if (arr[mid] < target) {
+      left = mid + 1;
+    } else {
+      right = mid - 1;
+    }
+  }
+  
+  return -1; // 未找到目标
+}
+
+// 使用示例
+const sortedArray = [2, 5, 8, 12, 16, 23, 38, 45, 56, 72];
+const targetValue = 23;
+const resultIndex = binarySearch(sortedArray, targetValue);
+
+if (resultIndex !== -1) {
+  console.log(`元素 ${targetValue} 在数组中的索引为: ${resultIndex}`);
+} else {
+  console.log(`元素 ${targetValue} 不在数组中`);
+}</code></pre>
+            </div>
+            
+            <div class="content-note">
+                <p><strong>注意：</strong> 二分查找要求数组必须是已排序的，否则无法得到正确结果。</p>
+            </div>
+            
+            <h2>3. 链表实现</h2>
+            <p>链表是一种线性数据结构，其中的元素不是存储在连续位置，而是通过指针链接。</p>
+            
+            <div class="code-section">
+                <div class="code-header">
+                    <span>链表数据结构 - JavaScript</span>
+                    <button class="copy-btn" data-target="code3">
+                        <i class="far fa-copy"></i> 复制代码
+                    </button>
+                </div>
+                <pre><code id="code3" class="language-javascript">// 链表节点类
+class ListNode {
+  constructor(value) {
+    this.value = value;
+    this.next = null;
+  }
+}
+
+// 链表类
+class LinkedList {
+  constructor() {
+    this.head = null;
+    this.size = 0;
+  }
+  
+  // 在链表末尾添加元素
+  append(value) {
+    const newNode = new ListNode(value);
+    
+    if (!this.head) {
+      this.head = newNode;
+    } else {
+      let current = this.head;
+      while (current.next) {
+        current = current.next;
+      }
+      current.next = newNode;
+    }
+    
+    this.size++;
+  }
+  
+  // 在特定位置插入元素
+  insertAt(value, index) {
+    if (index < 0 || index > this.size) {
+      return false;
+    }
+    
+    const newNode = new ListNode(value);
+    
+    if (index === 0) {
+      newNode.next = this.head;
+      this.head = newNode;
+    } else {
+      let current = this.head;
+      let previous = null;
+      let count = 0;
+      
+      while (count < index) {
+        previous = current;
+        current = current.next;
+        count++;
+      }
+      
+      newNode.next = current;
+      previous.next = newNode;
+    }
+    
+    this.size++;
+    return true;
+  }
+  
+  // 删除指定位置的元素
+  removeFrom(index) {
+    if (index < 0 || index >= this.size) {
+      return null;
+    }
+    
+    let current = this.head;
+    
+    if (index === 0) {
+      this.head = current.next;
+    } else {
+      let previous = null;
+      let count = 0;
+      
+      while (count < index) {
+        previous = current;
+        current = current.next;
+        count++;
+      }
+      
+      previous.next = current.next;
+    }
+    
+    this.size--;
+    return current.value;
+  }
+  
+  // 打印链表元素
+  print() {
+    let current = this.head;
+    let result = '';
+    
+    while (current) {
+      result += `${current.value} -> `;
+      current = current.next;
+    }
+    
+    result += 'null';
+    console.log(result);
+  }
+}
+
+// 使用示例
+const list = new LinkedList();
+list.append(10);
+list.append(20);
+list.append(30);
+list.insertAt(15, 1);
+list.print(); // 输出: 10 -> 15 -> 20 -> 30 -> null</code></pre>
+            </div>
+            
+            <h2>4. 防抖函数实现</h2>
+            <p>防抖(debounce)是一种常见的前端优化技术，用于限制函数调用的频率。</p>
+            
+            <div class="code-section">
+                <div class="code-header">
+                    <span>防抖函数 - JavaScript</span>
+                    <button class="copy-btn" data-target="code4">
+                        <i class="far fa-copy"></i> 复制代码
+                    </button>
+                </div>
+                <pre><code id="code4" class="language-javascript">/**
+ * 防抖函数
+ * @param {Function} func 需要防抖处理的函数
+ * @param {number} wait 等待时间(毫秒)
+ * @param {boolean} immediate 是否立即执行
+ * @return {Function} 返回防抖处理后的函数
+ */
+function debounce(func, wait = 300, immediate = false) {
+  let timeout;
+  
+  return function executedFunction(...args) {
+    const context = this;
+    
+    const later = function() {
+      timeout = null;
+      if (!immediate) {
+        func.apply(context, args);
+      }
+    };
+    
+    const callNow = immediate && !timeout;
+    
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+    
+    if (callNow) {
+      func.apply(context, args);
+    }
+  };
+}
+
+// 使用示例：处理输入框搜索
+const searchInput = document.getElementById('search-input');
+const searchResults = document.getElementById('search-results');
+
+function search(query) {
+  // 模拟搜索请求
+  console.log(`正在搜索: ${query}`);
+  // 这里通常会发起一个API请求
+}
+
+// 创建防抖的搜索函数
+const debouncedSearch = debounce(search, 500);
+
+// 监听输入框变化
+searchInput.addEventListener('input', (e) => {
+  debouncedSearch(e.target.value);
+});
+
+// 示例2：处理窗口调整事件
+window.addEventListener('resize', debounce(() => {
+  console.log('窗口大小已调整');
+}, 250));</code></pre>
+            </div>
+        </section>
+        
+        <!-- 右侧个人信息卡片 -->
+        <aside class="profile-section">
+            <div class="profile-card">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80" alt="个人头像" class="profile-img">
+                
+                <h2 class="profile-name">lsit</h2>
+                <p class="profile-title">其实这是个普通法师，高级前端开发工程师</p>
+                
+                <p class="profile-bio">此处吹牛，我是一名热爱编程的前端工程师，专注于创建美观、高效、易用的Web应用。有8年Web开发经验，擅长React、Vue和现代JavaScript技术。</p>
+                
+                <div class="profile-contacts">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope contact-icon"></i>
+                        <span>暂时为空</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone contact-icon"></i>
+                        <span>暂时为空</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt contact-icon"></i>
+                        <span>暂时为空</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fab fa-github contact-icon"></i>
+                        <span>github.com</span>
+                    </div>
+                </div>
+                
+                <h3 style="color: #cbd5e1; margin-bottom: 0.8rem; text-align: left; font-size: 1.1rem;">技术栈</h3>
+                <div class="profile-skills">
+                    <span class="skill-tag">JavaScript</span>
+                    <span class="skill-tag">TypeScript</span>
+                    <span class="skill-tag">React</span>
+                    <span class="skill-tag">Vue.js</span>
+                    <span class="skill-tag">Node.js</span>
+                    <span class="skill-tag">CSS3</span>
+                    <span class="skill-tag">HTML5</span>
+                    <span class="skill-tag">Webpack</span>
+                    <span class="skill-tag">Git</span>
+                    <span class="skill-tag">REST API</span>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>
+        // 初始化代码高亮
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.querySelectorAll('pre code').forEach((el) => {
+                hljs.highlightElement(el);
+            });
+            
+            // 添加复制功能
+            document.querySelectorAll('.copy-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+                    const codeElement = document.getElementById(targetId);
+                    
+                    // 复制代码到剪贴板
+                    navigator.clipboard.writeText(codeElement.textContent)
+                        .then(() => {
+                            // 显示复制成功状态
+                            const originalText = this.innerHTML;
+                            this.innerHTML = '<i class="fas fa-check"></i> 已复制';
+                            this.classList.add('copied');
+                            
+                            // 2秒后恢复原始状态
+                            setTimeout(() => {
+                                this.innerHTML = originalText;
+                                this.classList.remove('copied');
+                            }, 2000);
+                        })
+                        .catch(err => {
+                            console.error('复制失败: ', err);
+                            alert('复制失败，请手动复制代码');
+                        });
+                });
+            });
+        });
+        
+        // 添加一些交互效果
+        document.querySelectorAll('.code-section').forEach(section => {
+            section.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-3px)';
+                this.style.transition = 'transform 0.2s ease';
+                this.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.1)';
+            });
+            
+            section.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.08)';
+            });
+        });
+    </script>
+</body>
+</html>
