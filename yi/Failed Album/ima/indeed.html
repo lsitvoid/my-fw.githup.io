@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>铃兰图屋</title>
+  <style>
+    /* 样式保持之前的极简黑白，无改动 */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: #111;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 2rem 1.5rem;
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+    .gallery-minimal {
+      max-width: 1280px;
+      width: 100%;
+      background: #222;
+      border-radius: 24px;
+      padding: 2rem 2rem 2.5rem 2rem;
+      border: 1px solid #444;
+    }
+    .title-box {
+      background: #000;
+      border-radius: 20px;
+      padding: 1.2rem 2rem;
+      margin-bottom: 2.2rem;
+      border: 1px solid #666;
+      height: 70px;
+    }
+    .film-box {
+      background: #1a1a1a;
+      border-radius: 20px;
+      padding: 1.5rem 1rem;
+      border: 1px solid #555;
+      margin-bottom: 2rem;
+    }
+    .film-scroll-container {
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      border-radius: 12px;
+      background: #0f0f0f;
+      padding: 12px 4px;
+      scrollbar-width: thin;
+      scrollbar-color: #5a5a5a #222;
+      cursor: grab;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+    .film-scroll-container::-webkit-scrollbar {
+      height: 6px;
+      background: #222;
+      border-radius: 0;
+    }
+    .film-scroll-container::-webkit-scrollbar-thumb {
+      background: #555;
+      border-radius: 0;
+      border: 1px solid #111;
+    }
+    .film-track {
+      display: flex;
+      gap: 14px;
+      width: max-content;
+      padding: 6px 12px;
+    }
+    .film-frame {
+      flex: 0 0 280px;
+      scroll-snap-align: center;
+      background: #111;
+      border-radius: 8px;
+      padding: 4px;
+      border: 1px solid #777;
+      transition: transform 0.2s ease;
+    }
+    .film-frame a {
+      display: block;
+      width: 100%;
+      height: 200px;
+      overflow: hidden;
+      border: 1px solid #3a3a3a;
+      background: #1e1e1e;
+    }
+    .film-frame a img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: grayscale(0%);
+      transition: transform 0.3s ease;
+      pointer-events: none;
+    }
+    .film-frame:hover {
+      transform: scale(1.08);
+      z-index: 10;
+      border-color: #ccc;
+    }
+    .film-frame:hover a img {
+      transform: scale(1.05);
+    }
+    .control-box {
+      background: #1f1f1f;
+      border-radius: 40px;
+      padding: 1rem 2rem;
+      border: 1px solid #5f5f5f;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .dot-fleet {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .dot-fleet .dot {
+      width: 24px;
+      height: 24px;
+      background: transparent;
+      border: 2px solid #777;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .dot-fleet .dot.active {
+      background: #fff;
+      border-color: #fff;
+      transform: scale(1.2);
+    }
+    .dot-fleet .dot:hover {
+      background: #5e5e5e;
+      border-color: #aaa;
+      transform: scale(1.15);
+    }
+    @media (max-width: 600px) {
+      .film-frame {
+        flex: 0 0 220px;
+      }
+      .film-frame a {
+        height: 160px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="gallery-minimal">
+    <div class="title-box"></div>
+    <div class="film-box">
+      <div class="film-scroll-container" id="filmScroll">
+       <div class="film-track" id="filmTrack"></div> 
+      </div>
+    </div>
+    <div class="control-box">
+      <div class="dot-fleet" id="dotFleet"></div> 
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // ===== 请在此处修改为您的本地图片文件 =====
+      // 按顺序列出所有图片的文件名（建议将图片放在与HTML相同的文件夹内）
+      const imageFiles = [
+        '1.jpg',
+        '2.jpg',
+        '3.jpg',
+        '4.jpg',
+        '5.jpg',
+        '6.jpg',
+        '7.jpg',
+        '8.jpg' ,
+        '9.jpg'     // 您可以增加或删减，小方块数量会自动同步
+      ];
+
+      // 构建 slides 数据：小图和大图使用同一张（如果您有大图版本，可分别指定）
+      const slides = imageFiles.map(file => ({
+        small: file,        // 显示用的图片（通常也是原图）
+        large: file         // 点击后查看的大图（可改为 'large-' + file 等）
+      }));
+
+      // 以下代码无需修改，保持功能
+      const filmTrack = document.getElementById('filmTrack');
+      const filmScroll = document.getElementById('filmScroll');
+      const dotFleet = document.getElementById('dotFleet');
+
+      let isPaused = false;
+      let animationFrame = null;
+      const scrollSpeed = 0.8;
+      let items = [];
+      const originalCount = slides.length;
+      let currentCenterIndex = 0;
+
+      function buildFrames() {
+        let html = '';
+        for (let copy = 0; copy < 3; copy++) {
+          slides.forEach((slide, idx) => {
+            html += `
+              <div class="film-frame" data-original-index="${idx}" data-copy="${copy}">
+                <a href="${slide.large}" target="_blank" rel="noopener">
+                  <img src="${slide.small}" alt="" loading="lazy">
+                </a>
+              </div>
+            `;
+          });
+        }
+        filmTrack.innerHTML = html;
+        items = Array.from(document.querySelectorAll('.film-frame'));
+      }
+
+      function renderDots() {
+        let dots = '';
+        for (let i = 0; i < slides.length; i++) {
+          dots += `<div class="dot" data-index="${i}"></div>`;
+        }
+        dotFleet.innerHTML = dots;
+        updateActiveDot(currentCenterIndex);
+      }
+
+      function updateActiveDot(index) {
+        document.querySelectorAll('.dot').forEach((dot, i) => {
+          if (i === index) dot.classList.add('active');
+          else dot.classList.remove('active');
+        });
+      }
+
+      function getItemWidth() {
+        if (items.length === 0) return 300;
+        const first = items[0];
+        const gap = 14;
+        return first.offsetWidth + gap;
+      }
+
+      function updateCenterFromScroll() {
+        if (!filmScroll || items.length === 0) return;
+        const scrollL = filmScroll.scrollLeft;
+        const w = getItemWidth();
+        if (w <= 0) return;
+        const center = scrollL + filmScroll.clientWidth / 2;
+        const totalIdx = Math.floor(center / w);
+        const rawIdx = totalIdx % originalCount;
+        if (rawIdx !== currentCenterIndex) {
+          currentCenterIndex = rawIdx;
+          updateActiveDot(currentCenterIndex);
+        }
+      }
+
+      function startAutoScroll() {
+        let last = null;
+        function step(now) {
+          if (!last) last = now;
+          const delta = now - last;
+          last = now;
+
+          if (!isPaused && filmScroll) {
+            const stepPx = scrollSpeed * (delta / 16);
+            filmScroll.scrollLeft += stepPx;
+
+            const totalW = getItemWidth() * originalCount;
+            const midStart = totalW;
+            const midEnd = totalW * 2;
+
+            if (filmScroll.scrollLeft >= midEnd - 50) {
+              filmScroll.scrollLeft = midStart + 20;
+            } else if (filmScroll.scrollLeft <= 50) {
+              filmScroll.scrollLeft = midStart - 20;
+            }
+
+            updateCenterFromScroll();
+          }
+          animationFrame = requestAnimationFrame(step);
+        }
+        animationFrame = requestAnimationFrame(step);
+      }
+
+      filmScroll.addEventListener('scroll', updateCenterFromScroll);
+
+      dotFleet.addEventListener('click', (e) => {
+        const dot = e.target.closest('.dot');
+        if (!dot) return;
+        const idx = parseInt(dot.dataset.index, 10);
+        if (isNaN(idx)) return;
+
+        const totalW = getItemWidth() * originalCount;
+        const target = totalW + idx * getItemWidth() - (filmScroll.clientWidth / 2) + (getItemWidth() / 2);
+        filmScroll.scrollTo({ left: target, behavior: 'smooth' });
+        currentCenterIndex = idx;
+        updateActiveDot(currentCenterIndex);
+      });
+
+      filmScroll.addEventListener('mouseenter', () => { isPaused = true; });
+      filmScroll.addEventListener('mouseleave', () => { isPaused = false; });
+
+      function init() {
+        buildFrames();
+        renderDots();
+        setTimeout(() => {
+          const totalW = getItemWidth() * originalCount;
+          filmScroll.scrollLeft = totalW + 20;
+          currentCenterIndex = 0;
+          updateActiveDot(0);
+        }, 50);
+        startAutoScroll();
+      }
+
+      init();
+    })();
+  </script>
+</body>
+</html>
