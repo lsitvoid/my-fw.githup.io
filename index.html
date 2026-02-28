@@ -135,6 +135,73 @@
                 flex-basis: 100%;
             }
         }
+        /* 抽屉卡片样式：固定在右下角，默认只露出图片部分 */
+        .drawer-card {
+            position: fixed;
+            bottom: 20px;
+            right: -180px;          /* 隐藏右侧125px（文字区域） */
+            width: 250px;
+            height: 100px;
+            background: #ffffff;
+            border-radius: 0px 0 0 0px;  /* 左侧圆角，右侧直角更符合抽屉感 */
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            display: flex;
+            transition: right 0.35s cubic-bezier(0.2, 0.9, 0.3, 1);
+            overflow: hidden;
+            z-index: 9999;
+            border: 1px solid rgba(255,255,255,0.5);
+            backdrop-filter: blur(2px);
+        }
+
+        /* 悬停时卡片完全展开 */
+        .drawer-card:hover {
+            right: 20px;              /* 与底部对齐 */
+            border-radius: 0px;       /* 恢复完整角 */
+        }
+
+        /* 图片区域：左半部分 125x100 */
+        .card-image {
+           width: 120px;
+            height: 120px;                   /* 正方形 */
+            background-color: #dbc3b4;        /* 占位底色 */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-bottom: 2px solid #4e3a2f; /* 与边框统一 */
+        }
+
+        /* 文字区域：右半部分 125x100 */
+        .card-text {
+            width: 125px;
+            height: 100px;
+            padding: 10px 8px;
+            background: #f9f3e9;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            box-sizing: border-box;
+        }
+
+        .card-text h4 {
+            margin: 0 0 4px 0;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #44362a;
+            white-space: nowrap;
+        }
+
+        .card-text p {
+            margin: 0;
+            font-size: 0.75rem;
+            color: #6b4f3c;
+            line-height: 1.3;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
     </style>
 </head>
 <body>
@@ -166,7 +233,16 @@
                     <p class="nav-desc">我的盆友们都在哪呢？</p>
                 </div>
             </div>
+            
         </div>
+        <div class="drawer-card">
+        <div class="card-image" style="background-image: url('./tupian/剑来.png');"></div>
+        <div class="card-text">
+            <h4>庆祝剑来</h4>
+            <p>遇事不决，可问春风。<a href="">剑来</a></p>
+        </div>
+        </div>
+    </div>
     </div>
 
     <script>
@@ -303,5 +379,6 @@ function handleError(error) {
     </script>
 </body>
 </html>
+
 
 
