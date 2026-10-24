@@ -4,11 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>胡言乱语 · LIST 的博客</title>
-    <meta name="description" content="LIST 的博客：数据结构、玩具语言与建站笔记">
+    <meta name="description" content="LIST 的博客：编程、数据结构与玩具语言">
     <link rel="icon" type="image/avif" href="../tupian/xiaot.avif">
     <style>
-    /* 风格借鉴 zonelets.net（Marina Dittrich 的博客）：
-       米色纸面、衬线正文、单栏窄版，冷门但极耐看 */
+    /* 风格延续 zonelets.net：米色纸面、衬线、单栏窄版 */
     :root {
         --paper: #fffdf7;
         --ink: #323230;
@@ -29,17 +28,13 @@
 
     .page { max-width: 700px; margin: 0 auto; padding: 48px 0 64px; }
 
-    /* 顶部小招牌 */
     header.masthead {
         text-align: center;
         padding-bottom: 28px;
         border-bottom: 3px double var(--rule);
         margin-bottom: 40px;
     }
-    .masthead h1 {
-        font-size: 1.9rem;
-        letter-spacing: .1em;
-    }
+    .masthead h1 { font-size: 1.9rem; letter-spacing: .1em; }
     .masthead h1 a { color: var(--ink); text-decoration: none; }
     .masthead .sub { color: var(--faded); font-size: .9rem; margin-top: 6px; }
     .masthead nav { margin-top: 14px; font-size: .95rem; }
@@ -51,67 +46,40 @@
     }
     .masthead nav a:hover { border-bottom-color: var(--accent); }
 
-    /* 文章头 */
-    .post-meta { color: var(--faded); font-size: .88rem; margin-bottom: 8px; }
-    article h1 { font-size: 1.7rem; line-height: 1.4; margin-bottom: 20px; }
-
-    article h2 {
-        font-size: 1.3rem;
-        margin: 1.8em 0 .6em;
+    /* 栏目标签卡 */
+    .topics {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-top: 8px;
     }
-    article p { margin: 0 0 1.1em; }
-    article a { color: var(--accent); }
-    article blockquote {
-        margin: 1.2em 0;
-        padding: .2em 0 .2em 1.1em;
-        border-left: 3px solid var(--accent);
-        color: #56544c;
-    }
-    article ul, article ol { margin: 0 0 1.1em 1.6em; }
-    article li { margin-bottom: .3em; }
-    article code {
-        font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
-        font-size: .86em;
-        background: #f1eee4;
-        padding: .1em .35em;
-        border-radius: 3px;
-    }
-    article pre {
-        background: #f1eee4;
-        padding: 14px 16px;
-        overflow-x: auto;
-        font-size: .88rem;
-        line-height: 1.6;
-        margin: 0 0 1.2em;
-        border-radius: 4px;
-    }
-    article pre code { background: none; padding: 0; }
-    article hr {
-        border: 0;
-        border-top: 1px solid var(--rule);
-        margin: 2.4em auto;
-        width: 40%;
-    }
-
-    /* 往期文章 */
-    .past {
-        margin-top: 56px;
-        border-top: 3px double var(--rule);
-        padding-top: 24px;
-    }
-    .past h2 { font-size: 1.15rem; margin-bottom: 14px; }
-    .past li {
-        list-style: none;
+    .topic-card {
         display: flex;
-        justify-content: space-between;
-        gap: 16px;
-        padding: 6px 0;
-        border-bottom: 1px dotted var(--rule);
-        font-size: 1rem;
+        flex-direction: column;
+        gap: 8px;
+        padding: 22px 20px;
+        border: 1px solid var(--rule);
+        border-radius: 6px;
+        background: #fffef9;
+        text-decoration: none;
+        color: var(--ink);
+        transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
     }
-    .past li a { color: var(--ink); text-decoration: none; }
-    .past li a:hover { color: var(--accent); }
-    .past .date { color: var(--faded); white-space: nowrap; font-size: .88rem; }
+    .topic-card:hover {
+        transform: translateY(-3px);
+        border-color: var(--accent);
+        box-shadow: 0 6px 18px rgba(194, 87, 28, .08);
+    }
+    .topic-card h2 { font-size: 1.25rem; margin: 0; color: var(--accent); }
+    .topic-card p {
+        font-size: .95rem;
+        line-height: 1.7;
+        color: #56544c;
+        margin: 0;
+        flex: 1;
+    }
+    .topic-more { font-size: .88rem; color: var(--faded); }
+    .topic-card:hover .topic-more { color: var(--accent); }
 
     footer {
         text-align: center;
@@ -121,13 +89,11 @@
     }
     footer a { color: var(--accent); text-decoration: none; }
 
-    /* 移动端 */
     @media (max-width: 600px) {
         body { font-size: 1.02rem; padding: 0 16px; }
         .page { padding: 28px 0 44px; }
         .masthead h1 { font-size: 1.5rem; }
-        article h1 { font-size: 1.4rem; }
-        .past li { flex-direction: column; gap: 2px; }
+        .topics { grid-template-columns: 1fr; gap: 14px; }
     }
     </style>
 </head>
@@ -143,60 +109,29 @@
             </nav>
         </header>
 
-        <article>
-            <p class="post-meta">2026 年 10 月 25 日 · 随笔</p>
-            <h1>给数据结构点人情味：从红黑树说起</h1>
-
-            <p>课本把红黑树讲得很玄，其实它只回答一个问题：
-            <strong>怎么让二叉搜索树在最坏情况下也不长歪。</strong></p>
-
-            <blockquote>红黑树不追求完全平衡，只保证从根到叶子的最长路径
-            不超过最短路径的两倍——够用，且旋转次数少。</blockquote>
-
-            <h2>它的账本</h2>
-            <ul>
-                <li>插入 / 删除 / 查找稳定在 <code>O(log n)</code></li>
-                <li>节点只多存 1 bit 颜色，比 AVL 的平衡因子省内存</li>
-                <li>中序遍历天然有序，适合 <code>std::map</code>、Linux CFS 这类场景</li>
-            </ul>
-
-            <h2>代价</h2>
-            <ul>
-                <li>插入删除要处理着色与旋转，实现复杂、代码量大</li>
-                <li>范围查询要跨子树遍历，不如 B 树对缓存友好</li>
-            </ul>
-
-            <hr>
-
-            <p>后来我拿「241」三个数字设计过一门玩具三进制语言，
-            把指令集映射到三进制编码上，27 条指令刚好够一个栈机用。
-            具体见这篇文章里当时的推导。</p>
-
-            <pre><code>1 -&gt; 0   2 -&gt; 1   4 -&gt; 2
-指令 = 三位三进制数，共 3^3 = 27 条
-112 = ADD    114 = SUB    241 = HALT</code></pre>
-
-            <p>玩具语言的意义不在能算什么，而在你亲手把
-            「编码 → 指令 → 执行」这条链走通一遍。数据结构也一样。</p>
-        </article>
-
-        <section class="past">
-            <h2>往期</h2>
-            <ul>
-                <li>
-                    <a href="xiangqing.html">241：一门三进制玩具语言的完整设计</a>
-                    <span class="date">2026-09</span>
-                </li>
-                <li>
-                    <a href="index.html#game">访仙：用 Godot 做一张 2D 卡牌</a>
-                    <span class="date">2026-08</span>
-                </li>
-                <li>
-                    <a href="Reward.html">关于这个网站的维护成本</a>
-                    <span class="date">2026-07</span>
-                </li>
-            </ul>
-        </section>
+        <!-- 栏目标签卡：每张跳转专属页 -->
+        <div class="topics">
+            <a class="topic-card" href="hello.html">
+                <h2>你好世界</h2>
+                <p>探索编程世界，从 Hello World 开始——几十门语言的问候都在这。</p>
+                <span class="topic-more">进这个栏目 →</span>
+            </a>
+            <a class="topic-card" href="shijie.html">
+                <h2>构建人类命运共同体</h2>
+                <p>促进全球和平发展。开源社区也许是这句话最好的注脚。</p>
+                <span class="topic-more">进这个栏目 →</span>
+            </a>
+            <a class="topic-card" href="hongheishu.html">
+                <h2>红黑树</h2>
+                <p>课本讲得很玄？其实它只回答一个问题：怎么让搜索树最坏也不长歪。</p>
+                <span class="topic-more">进这个栏目 →</span>
+            </a>
+            <a class="topic-card" href="xiangqing.html">
+                <h2>241 语言</h2>
+                <p>拿 2、4、1 三个数字设计的玩具三进制语言，27 条指令够一个栈机。</p>
+                <span class="topic-more">进这个栏目 →</span>
+            </a>
+        </div>
 
         <footer>
             <p>© LIST · <a href="https://github.com/lsitvoid" target="_blank" rel="noopener">github.com/lsitvoid</a></p>

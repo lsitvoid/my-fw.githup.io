@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>红黑树 · LIST 的博客</title>
+    <link rel="icon" type="image/avif" href="../tupian/xiaot.avif">
+    <style>
+    :root { --paper:#fffdf7; --ink:#323230; --faded:#8c8a80; --accent:#c2571c; --rule:#e4e0d4; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:var(--paper); color:var(--ink);
+           font-family:Georgia,'Noto Serif CJK SC','Songti SC',serif;
+           font-size:1.1rem; line-height:1.85; padding:0 24px; }
+    .page { max-width:700px; margin:0 auto; padding:48px 0 64px; }
+    header.masthead { text-align:center; padding-bottom:28px;
+        border-bottom:3px double var(--rule); margin-bottom:40px; }
+    .masthead h1 a { color:var(--ink); text-decoration:none; font-size:1.9rem; letter-spacing:.1em; }
+    .masthead .sub { color:var(--faded); font-size:.9rem; margin-top:6px; }
+    .masthead nav { margin-top:14px; font-size:.95rem; }
+    .masthead nav a { color:var(--accent); text-decoration:none; margin:0 10px; }
+    .post-meta { color:var(--faded); font-size:.88rem; margin-bottom:8px; }
+    article h1 { font-size:1.7rem; line-height:1.4; margin-bottom:20px; }
+    article h2 { font-size:1.3rem; margin:1.8em 0 .6em; }
+    article p { margin:0 0 1.1em; }
+    article ul { margin:0 0 1.1em 1.6em; }
+    article li { margin-bottom:.3em; }
+    article blockquote { margin:1.2em 0; padding:.2em 1.1em;
+        border-left:3px solid var(--accent); color:#56544c; }
+    article a { color:var(--accent); }
+    code { font-family:ui-monospace,Menlo,Consolas,monospace; }
+    p code, li code { background:#f1eee4; padding:.1em .35em; border-radius:3px; font-size:.86em; }
+    pre { background:#f1eee4; padding:14px 16px; overflow-x:auto;
+          font-size:.88rem; line-height:1.6; margin:0 0 1.2em; border-radius:4px; }
+    pre code { background:none; }
+    footer { text-align:center; color:var(--faded); font-size:.88rem; margin-top:48px; }
+    footer a { color:var(--accent); text-decoration:none; }
+    @media (max-width:600px) { body{font-size:1.02rem;padding:0 16px;} .page{padding:28px 0 44px;} }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header class="masthead">
+            <h1><a href="index2.1.html">胡言乱语</a></h1>
+            <p class="sub">LIST 的博客 — 想到什么写什么</p>
+            <nav>
+                <a href="../index.html">主页</a>
+                <a href="index2.1.html">栏目</a>
+                <a href="https://github.com/lsitvoid" target="_blank" rel="noopener">GitHub</a>
+            </nav>
+        </header>
+
+        <article>
+            <p class="post-meta">栏目 · 数据结构</p>
+            <h1>红黑树</h1>
+
+            <p>课本把红黑树讲得很玄，其实它只回答一个问题：
+            <strong>怎么让二叉搜索树在最坏情况下也不长歪。</strong></p>
+
+            <blockquote>红黑树不追求完全平衡，只保证从根到叶子的最长路径
+            不超过最短路径的两倍——够用，且旋转次数少。</blockquote>
+
+            <h2>它的五条家规</h2>
+            <ul>
+                <li>每个节点非红即黑</li>
+                <li>根节点是黑的</li>
+                <li>叶子（NIL）是黑的</li>
+                <li>红节点的孩子必须是黑的（不许红红相邻）</li>
+                <li>任一节点到其每个叶子的路径含相同数目的黑节点</li>
+            </ul>
+
+            <h2>优点</h2>
+            <ul>
+                <li>插入 / 删除 / 查找稳定在 <code>O(log n)</code></li>
+                <li>节点只多存 1 bit 颜色，比 AVL 的平衡因子省内存</li>
+                <li>中序遍历天然有序，适合有序集合、有序映射这类场景</li>
+            </ul>
+
+            <h2>代价</h2>
+            <ul>
+                <li>插入删除要处理着色与旋转，实现复杂、代码量大</li>
+                <li>范围查询要跨子树遍历，效率相对低</li>
+                <li>节点内存不连续，缓存命中率不如 B 树，高频缓存场景要掂量</li>
+            </ul>
+
+            <h2>在哪见过它</h2>
+            <p>C++ 的 <code>std::map</code>、Java 的 <code>TreeMap</code>、
+            Linux 内核的 CFS 调度器与 epoll 的就绪队列——
+            工业界选它的理由就一条：<strong>最坏情况可预期</strong>。</p>
+
+            <pre><code>      13B                    插入 8 后旋转着色：
+     /  \                        11B
+    8R   17R      →             /    \
+                               8R    13R
+                                     \
+                                     17R</code></pre>
+
+            <p>相关阅读：<a href="xiangqing.html">241：一门三进制玩具语言</a>——
+            同样是「在约束里找秩序」的练习。</p>
+        </article>
+
+        <footer>
+            <p>© LIST · <a href="https://github.com/lsitvoid" target="_blank" rel="noopener">github.com/lsitvoid</a></p>
+        </footer>
+    </div>
+</body>
+</html>

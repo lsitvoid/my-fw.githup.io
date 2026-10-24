@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>你好世界 · LIST 的博客</title>
+    <link rel="icon" type="image/avif" href="../tupian/xiaot.avif">
+    <style>
+    :root { --paper:#fffdf7; --ink:#323230; --faded:#8c8a80; --accent:#c2571c; --rule:#e4e0d4; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:var(--paper); color:var(--ink);
+           font-family:Georgia,'Noto Serif CJK SC','Songti SC',serif;
+           font-size:1.1rem; line-height:1.85; padding:0 24px; }
+    .page { max-width:700px; margin:0 auto; padding:48px 0 64px; }
+    header.masthead { text-align:center; padding-bottom:28px;
+        border-bottom:3px double var(--rule); margin-bottom:40px; }
+    .masthead h1 a { color:var(--ink); text-decoration:none; font-size:1.9rem; letter-spacing:.1em; }
+    .masthead .sub { color:var(--faded); font-size:.9rem; margin-top:6px; }
+    .masthead nav { margin-top:14px; font-size:.95rem; }
+    .masthead nav a { color:var(--accent); text-decoration:none; margin:0 10px; }
+    .post-meta { color:var(--faded); font-size:.88rem; margin-bottom:8px; }
+    article h1 { font-size:1.7rem; line-height:1.4; margin-bottom:20px; }
+    article h2 { font-size:1.3rem; margin:1.8em 0 .6em; }
+    article p { margin:0 0 1.1em; }
+    article blockquote { margin:1.2em 0; padding:.2em 1.1em;
+        border-left:3px solid var(--accent); color:#56544c; }
+    pre { background:#f1eee4; padding:14px 16px; overflow-x:auto;
+          font-size:.88rem; line-height:1.6; margin:0 0 1.6em; border-radius:4px; }
+    code { font-family:ui-monospace,Menlo,Consolas,monospace; }
+    p code, li code { background:#f1eee4; padding:.1em .35em; border-radius:3px; font-size:.86em; }
+    figure.cap { margin:20px 0; }
+    figure.cap img { width:60%; display:block; margin:0 auto; border-radius:6px; }
+    figure.cap figcaption { text-align:center; color:var(--faded); font-size:.85rem; margin-top:6px; }
+    footer { text-align:center; color:var(--faded); font-size:.88rem; margin-top:48px; }
+    footer a { color:var(--accent); text-decoration:none; }
+    @media (max-width:600px) {
+        body{font-size:1.02rem;padding:0 16px;} .page{padding:28px 0 44px;}
+        figure.cap img { width:100%; }
+    }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header class="masthead">
+            <h1><a href="index2.1.html">胡言乱语</a></h1>
+            <p class="sub">LIST 的博客 — 想到什么写什么</p>
+            <nav>
+                <a href="../index.html">主页</a>
+                <a href="index2.1.html">栏目</a>
+                <a href="https://github.com/lsitvoid" target="_blank" rel="noopener">GitHub</a>
+            </nav>
+        </header>
+
+        <article>
+            <p class="post-meta">栏目 · 编程</p>
+            <h1>你好，世界</h1>
+            <p>1972 年，Brian Kernighan 在 B 语言教程里写下第一句
+            <em>hello, world</em>。此后它成了每个程序员与新语言见面的握手礼——
+            能不能用最短的代码，向这个世界说出第一句话。</p>
+
+            <figure class="cap">
+                <img src="tupian/4.jpg" alt="探索编程世界">
+                <figcaption>探索编程世界，从 Hello World 开始</figcaption>
+            </figure>
+
+            <h2>Python</h2><p class="note">人生苦短</p>
+            <pre><code>print("Hello, World!")</code></pre>
+
+            <h2>C</h2><p class="note">一切从这里开始（1978）</p>
+            <pre><code>#include &lt;stdio.h&gt;
+int main(void) {
+    printf("Hello, World!\n");
+    return 0;
+}</code></pre>
+
+            <h2>C++</h2><p class="note">比 C 多一点仪式感</p>
+            <pre><code>#include &lt;iostream&gt;
+int main() {
+    std::cout &lt;&lt; "Hello, World!" &lt;&lt; std::endl;
+}</code></pre>
+
+            <h2>Rust</h2><p class="note">编译器教做人，然后真香</p>
+            <pre><code>fn main() {
+    println!("Hello, World!");
+}</code></pre>
+
+            <h2>Go</h2><p class="note">Google 的朴素</p>
+            <pre><code>package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("Hello, World!")
+}</code></pre>
+
+            <h2>JavaScript</h2><p class="note">世界上被写得最多的问候</p>
+            <pre><code>console.log("Hello, World!");</code></pre>
+
+            <h2>TypeScript</h2><p class="note">给 JS 加上类型再问好</p>
+            <pre><code>const greeting: string = "Hello, World!";
+console.log(greeting);</code></pre>
+
+            <h2>Java</h2><p class="note">先穿礼服再说话</p>
+            <pre><code>public class Main {
+    public static void main(String[] args) {
+        System.out.println("Hello, World!");
+    }
+}</code></pre>
+
+            <h2>C#</h2><p class="note">微软的问候</p>
+            <pre><code>Console.WriteLine("Hello, World!");</code></pre>
+
+            <h2>Shell</h2><p class="note">Arch 用户的日常第一行</p>
+            <pre><code>echo "Hello, World!"</code></pre>
+
+            <h2>Perl</h2><p class="note">一句话，手表密码</p>
+            <pre><code>print "Hello, World!\n";</code></pre>
+
+            <h2>Ruby</h2><p class="note">为快乐而设计</p>
+            <pre><code>puts "Hello, World!"</code></pre>
+
+            <h2>PHP</h2><p class="note">别笑，它撑起了半个互联网</p>
+            <pre><code>&lt;?php echo "Hello, World!"; ?&gt;</code></pre>
+
+            <h2>Swift</h2><p class="note">苹果的一行主义</p>
+            <pre><code>print("Hello, World!")</code></pre>
+
+            <h2>Kotlin</h2><p class="note">Java 的现代邻居</p>
+            <pre><code>fun main() = println("Hello, World!")</code></pre>
+
+            <h2>Haskell</h2><p class="note">纯函数地问好</p>
+            <pre><code>main :: IO ()
+main = putStrLn "Hello, World!"</code></pre>
+
+            <h2>Lisp / Scheme</h2><p class="note">括号会呼吸</p>
+            <pre><code>(display "Hello, World!") (newline)</code></pre>
+
+            <h2>Erlang</h2><p class="note">电信级的问候</p>
+            <pre><code>io:format("Hello, World!~n").</code></pre>
+
+            <h2>Fortran</h2><p class="note">1957 年，比爷爷还年长</p>
+            <pre><code>program hello
+    print *, "Hello, World!"
+end program hello</code></pre>
+
+            <h2>COBOL</h2><p class="note">银行系统的第一声问好</p>
+            <pre><code>IDENTIFICATION DIVISION.
+PROGRAM-ID. HELLO.
+PROCEDURE DIVISION.
+    DISPLAY "Hello, World!".
+    STOP RUN.</code></pre>
+
+            <h2>Pascal</h2><p class="note">信息课的记忆</p>
+            <pre><code>begin
+  writeln('Hello, World!')
+end.</code></pre>
+
+            <h2>Lua</h2><p class="note">游戏脚本之王</p>
+            <pre><code>print("Hello, World!")</code></pre>
+
+            <h2>Julia</h2><p class="note">科学计算的新贵</p>
+            <pre><code>println("Hello, World!")</code></pre>
+
+            <h2>Scala</h2><p class="note">JVM 上的函数式</p>
+            <pre><code>@main def hello() = println("Hello, World!")</code></pre>
+
+            <h2>Zig</h2><p class="note">更现代的系统语言</p>
+            <pre><code>const std = @import("std");
+pub fn main() void {
+    std.debug.print("Hello, World!\n", .{});
+}</code></pre>
+
+            <h2>Assembly（x86-64 Linux NASM）</h2><p class="note">离系统最近的一声问好</p>
+            <pre><code>section .data
+    msg db "Hello, World!", 10
+    len equ $ - msg
+section .text
+global _start
+_start:
+    mov rax, 1          ; sys_write
+    mov rdi, 1          ; stdout
+    mov rsi, msg
+    mov rdx, len
+    syscall
+    mov rax, 60         ; sys_exit
+    xor rdi, rdi
+    syscall</code></pre>
+
+            <h2>SQL</h2><p class="note">数据库也会说话</p>
+            <pre><code>SELECT 'Hello, World!';</code></pre>
+
+            <h2>HTML</h2><p class="note">严格说不算编程语言，但你正在看的就是它</p>
+            <pre><code>&lt;p&gt;Hello, World!&lt;/p&gt;</code></pre>
+
+            <h2>Brainfuck</h2><p class="note">到底谁被玩坏了</p>
+            <pre><code>++++++++[&gt;++++[&gt;++&gt;+++&gt;+++&gt;+&lt;&lt;&lt;&lt;&lt;-]&gt;+&gt;+&gt;-&gt;&gt;+[&lt;]&lt;-]
+&gt;&gt;.&gt;---.+++++++..+++.&gt;&lt;&lt;.&lt;[&gt;]&gt;--.------.--------.&gt;+.</code></pre>
+        </article>
+
+        <footer>
+            <p>© LIST · <a href="https://github.com/lsitvoid" target="_blank" rel="noopener">github.com/lsitvoid</a></p>
+        </footer>
+    </div>
+</body>
+</html>
