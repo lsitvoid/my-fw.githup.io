@@ -4,14 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>小世界中转站</title>
-     <link rel="icon" type="image/png" href="tupian/xiaot.avif">
+    <meta name="description" content="LIST 的个人主页：铃兰、剑来与朋友们">
+    <meta property="og:title" content="小世界中转站">
+    <meta property="og:description" content="LIST 的个人主页">
+    <link rel="preload" as="image" href="tupian/3.webp">
+     <link rel="icon" type="image/avif" href="tupian/xiaot.avif">
     <style>
         /* 基础样式重置 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            transition: all 0.3s ease;
+            transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
         }
 
         /* 全屏背景容器 */
@@ -236,10 +240,10 @@
             
         </div>
         <div class="drawer-card">
-        <div class="card-image" style="background-image: url('./tupian/剑来.png');"></div>
+        <div class="card-image" style="background-image: url('tupian/jianlai.webp');"></div>
         <div class="card-text">
             <h4>庆祝剑来</h4>
-            <p>遇事不决，可问春风。<a href="./yi/jianlai/index.html">剑来</a></p>
+            <p>遇事不决，可问春风。<a href="./legacy/jianlai/index.html">剑来</a></p>
         </div>
         </div>
     </div>
@@ -247,7 +251,7 @@
 
     <script>
     const PATH_CONFIG = {
-    base: '/yi/',  // 基础路径（根据实际目录结构修改）
+    base: '/legacy/',  // 基础路径（根据实际目录结构修改）
     pages: {
         1: 'index.html',    // 功能专区页面
         2: 'index2.1.html',    // 案例展示页面
