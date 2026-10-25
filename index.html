@@ -7,188 +7,161 @@
     <meta name="description" content="LIST 的个人主页：铃兰、剑来与朋友们">
     <meta property="og:title" content="小世界中转站">
     <meta property="og:description" content="LIST 的个人主页">
+    <link rel="icon" type="image/avif" href="tupian/xiaot.avif">
     <link rel="preload" as="image" href="tupian/3.webp">
-     <link rel="icon" type="image/avif" href="tupian/xiaot.avif">
     <style>
-        /* 基础样式重置 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
+            transition: opacity .3s ease, transform .3s ease, background-color .3s ease, right .35s cubic-bezier(.2,.9,.3,1);
         }
 
-        /* 全屏背景容器 */
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            opacity: 0;
+        }
+
         .welcome-container {
             position: relative;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             padding: 40px 20px;
-            background: 
-                linear-gradient(45deg, rgba(255,107,107,0.1), rgba(78,205,196,0.1)),
+            background:
+                linear-gradient(45deg, rgba(255,107,107,.1), rgba(78,205,196,.1)),
                 url('tupian/3.webp') no-repeat center center;
             background-size: cover;
-            background-attachment: fixed;
             isolation: isolate;
         }
 
-        /* 背景遮罩层 */
         .welcome-container::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.15);
+            inset: 0;
+            background: rgba(0,0,0,.15);
             z-index: -1;
         }
 
-        /* 主内容区域 */
         .main-content {
             flex: 1;
             display: flex;
             gap: 40px;
             max-width: 1200px;
             margin: 0 auto;
+            width: 100%;
         }
 
-        /* 右侧用户卡片 */
+        /* 用户卡片 */
         .user-card {
             flex: 0 0 300px;
-            background: rgba(255,255,255,0.05);
+            background: rgba(255,255,255,.05);
             backdrop-filter: blur(10px);
             border-radius: 16px;
             padding: 24px;
             text-align: center;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,.1);
             margin-top: 60px;
+            cursor: pointer;
         }
+
+        .user-card:hover .avatar { transform: scale(1.05); }
 
         .avatar {
             width: 120px;
             height: 120px;
             border-radius: 50%;
-            border: 4px solid rgba(255,255,255,0.2);
+            border: 4px solid rgba(255,255,255,.2);
             object-fit: cover;
             margin-bottom: 16px;
         }
 
         .username {
-            color: white;
+            color: #fff;
             font-size: 1.5em;
             margin-bottom: 12px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+            text-shadow: 1px 1px 2px rgba(0,0,0,.2);
         }
 
-        /* 导航卡片容器 */
+        .user-bio {
+            color: rgba(255,255,255,.85);
+            line-height: 1.6;
+        }
+
+        /* 导航卡片 */
         .nav-cards {
             flex: 1;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    margin-top: 60px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 60px;
         }
 
-        /* 通用导航卡片样式 */
         .nav-card {
             flex: 1 1 300px;
-            background: rgba(255,255,255,0.05);
+            background: rgba(255,255,255,.05);
             backdrop-filter: blur(10px);
             border-radius: 12px;
             padding: 24px;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,.1);
             cursor: pointer;
-            transition: transform 0.3s;
             min-width: 280px;
         }
 
-        .nav-card:hover {
+        .nav-card:hover, .nav-card:focus-visible {
             transform: translateY(-5px);
+            background: rgba(255,255,255,.1);
+            outline: 2px solid rgba(255,255,255,.4);
         }
 
         .nav-title {
-            color: white;
+            color: #fff;
             font-size: 1.25em;
             margin-bottom: 8px;
         }
 
-        /* 移动端适配 */
-        @media (max-width: 992px) {
-            .main-content {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .user-card {
-                flex: none;
-                width: 90%;
-                max-width: 400px;
-                margin: 0 auto 40px;
-            }
-
-            .nav-cards {
-                width: 100%;
-                justify-content: center;
-            }
+        .nav-desc {
+            color: rgba(255,255,255,.75);
+            line-height: 1.5;
         }
 
-        @media (max-width: 480px) {
-            .nav-card {
-                flex-basis: 100%;
-            }
-        }
-        /* 抽屉卡片样式：固定在右下角，默认只露出图片部分 */
+        /* 右下角抽屉卡片：悬停 / 点按展开 */
         .drawer-card {
             position: fixed;
             bottom: 20px;
-            right: -180px;          /* 隐藏右侧125px（文字区域） */
+            right: -180px;              /* 收起：只露图片 */
             width: 250px;
             height: 100px;
-            background: #ffffff;
-            border-radius: 0px 0 0 0px;  /* 左侧圆角，右侧直角更符合抽屉感 */
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            border-radius: 8px 0 0 8px;
+            box-shadow: 0 8px 20px rgba(0,0,0,.2);
             display: flex;
-            transition: right 0.35s cubic-bezier(0.2, 0.9, 0.3, 1);
             overflow: hidden;
             z-index: 9999;
-            border: 1px solid rgba(255,255,255,0.5);
-            backdrop-filter: blur(2px);
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,.5);
         }
 
-        /* 悬停时卡片完全展开 */
-        .drawer-card:hover {
-            right: 20px;              /* 与底部对齐 */
-            border-radius: 0px;       /* 恢复完整角 */
-        }
+        .drawer-card:hover, .drawer-card.open { right: 20px; }
 
-        /* 图片区域：左半部分 125x100 */
         .card-image {
-           width: 120px;
-            height: 120px;                   /* 正方形 */
-            background-color: #dbc3b4;        /* 占位底色 */
+            flex: 0 0 120px;
+            background-color: #dbc3b4;
             background-size: cover;
             background-position: center;
-            background-repeat: no-repeat;
-            border-bottom: 2px solid #4e3a2f; /* 与边框统一 */
+            border-bottom: 2px solid #4e3a2f;
         }
 
-        /* 文字区域：右半部分 125x100 */
         .card-text {
-            width: 125px;
-            height: 100px;
+            flex: 1;
             padding: 10px 8px;
             background: #f9f3e9;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
-            box-sizing: border-box;
         }
 
         .card-text h4 {
-            margin: 0 0 4px 0;
+            margin: 0 0 4px;
             font-size: 1rem;
             font-weight: 600;
             color: #44362a;
@@ -197,194 +170,116 @@
 
         .card-text p {
             margin: 0;
-            font-size: 0.75rem;
+            font-size: .75rem;
             color: #6b4f3c;
             line-height: 1.3;
-            overflow: hidden;
-            text-overflow: ellipsis;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* 减少动效偏好 */
+        @media (prefers-reduced-motion: reduce) {
+            * { transition: none !important; animation: none !important; }
+        }
+
+        /* 移动端 */
+        @media (max-width: 992px) {
+            .main-content { flex-direction: column; align-items: center; }
+            .user-card { flex: none; width: 90%; max-width: 400px; margin: 0 auto 40px; }
+            .nav-cards { width: 100%; justify-content: center; }
+            .welcome-container { background-attachment: scroll; }
+        }
+
+        @media (max-width: 480px) {
+            .nav-card { flex-basis: 100%; }
+            /* 触屏无 hover：收得更浅，露出一角提示可点 */
+            .drawer-card { right: -200px; }
+            .drawer-card.open { right: 12px; }
         }
     </style>
 </head>
 <body>
     <div class="welcome-container">
         <div class="main-content">
-            <!-- 右侧用户卡片 -->
-            <div class="user-card" onclick="navigateTo('5')">
+            <div class="user-card" onclick="navigateTo('5')"
+                 role="link" tabindex="0" aria-label="进入 theend 页面">
                 <img src="tupian/169959361.jpg" alt="头像" class="avatar">
                 <h2 class="username">LIST</h2>
                 <p class="user-bio">我不喜欢这个世界<br>但我|任然满怀热情</p>
             </div>
 
-            <!-- 导航卡片组 -->
             <div class="nav-cards">
-                <div class="nav-card" onclick="navigateTo('1')">
+                <div class="nav-card" onclick="navigateTo('1')" role="link" tabindex="0">
                     <h3 class="nav-title">一个铃兰的页面</h3>
                     <p class="nav-desc">铃兰小姐是我们的光 <br>本页面对小屏设备不太友好</p>
                 </div>
-                <div class="nav-card" onclick="navigateTo('2')">
+                <div class="nav-card" onclick="navigateTo('2')" role="link" tabindex="0">
                     <h3 class="nav-title">魔法书</h3>
                     <p class="nav-desc">这是正经的，不用担心</p>
                 </div>
-                <div class="nav-card" onclick="navigateTo('3')">
+                <div class="nav-card" onclick="navigateTo('3')" role="link" tabindex="0">
                     <h3 class="nav-title">铃兰百科</h3>
                     <p class="nav-desc">一个为铃兰写的网站</p>
                 </div>
-                <div class="nav-card" onclick="navigateTo('4')">
+                <div class="nav-card" onclick="navigateTo('4')" role="link" tabindex="0">
                     <h3 class="nav-title">友链</h3>
                     <p class="nav-desc">我的盆友们都在哪呢？</p>
                 </div>
             </div>
-            
         </div>
-        <div class="drawer-card">
-        <div class="card-image" style="background-image: url('tupian/jianlai.webp');"></div>
-        <div class="card-text">
-            <h4>庆祝剑来</h4>
-            <p>遇事不决，可问春风。<a href="./legacy/jianlai/index.html">剑来</a></p>
+
+        <div class="drawer-card" id="drawer"
+             onclick="toggleDrawer(event)" role="button" tabindex="0"
+             aria-label="庆祝剑来，点按展开">
+            <div class="card-image" style="background-image: url('tupian/jianlai.webp');"></div>
+            <div class="card-text">
+                <h4>庆祝剑来</h4>
+                <p>遇事不决，可问春风。<a href="./legacy/jianlai/index.html">剑来</a></p>
+            </div>
         </div>
-        </div>
-    </div>
     </div>
 
     <script>
+    // 页面路由：全部指向 legacy/
     const PATH_CONFIG = {
-    base: '/legacy/',  // 基础路径（根据实际目录结构修改）
-    pages: {
-        1: 'index.html',    // 功能专区页面
-        2: 'index2.1.html',    // 案例展示页面
-        3: './Failed Album/index.html',
-        4: './indexyou.html',
-        5: './yi/theend/index-y.html'
-    }
+        base: 'legacy/',
+        pages: {
+            1: 'index.html',
+            2: 'index2.1.html',
+            3: 'Failed Album/index.html',
+            4: 'indexyou.html',
+            5: 'theend/index-y.html'
+        }
     };
+
     function navigateTo(pageId) {
-    // 参数有效性验证
-    if (!PATH_CONFIG.pages.hasOwnProperty(pageId)) {
-        showError('无效的页面标识');
-        return;
+        const path = PATH_CONFIG.pages[pageId];
+        if (!path) return;
+        window.location.href = PATH_CONFIG.base + path;
     }
- 
-    // 显示加载提示
-    showLoading();
- 
-    // 实际跳转逻辑（带延迟模拟加载）
-    setTimeout(() => {
-        try {
-            // 构建完整路径
-            const targetUrl = PATH_CONFIG.base + PATH_CONFIG.pages[pageId];
-            
-            // 执行跳转
-            window.location.href = targetUrl;
-            
-            // 记录访问日志（可选）
-            logAccess(pageId);
-            
-        } catch (error) {
-            handleError(error);
-        }
-    }, 500); // 模拟网络延迟
-}
- 
-// 辅助功能函数
-function showLoading() {
-    // 创建加载遮罩层
-    const overlay = document.createElement('div');
-    overlay.style = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background: rgba(0,0,0,0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
-    `;
-    
-    // 添加加载动画
-    const spinner = document.createElement('div');
-    spinner.className = 'spinner';
-    spinner.style.border = '4px solid rgba(255,255,255,0.3)';
-    spinner.style.borderTop = '4px solid #fff';
-    spinner.style.borderRadius = '50%';
-    spinner.style.width = '40px';
-    spinner.style.height = '40px';
-    spinner.style.animation = 'spin 1s linear infinite';
- 
-    overlay.appendChild(spinner);
-    document.body.appendChild(overlay);
- 
-    // 添加旋转动画
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-    `;
-    document.head.appendChild(style);
-}
- 
-function showError(message) {
-    alert(`操作失败：${message}`);
-    // 实际项目建议使用更优雅的错误提示方式
-}
- 
-function logAccess(pageId) {
-    console.log(`用户访问页面: ${pageId} (${new Date().toISOString()})`);
-    // 可在此添加网络请求记录访问日志
-}
- 
-function handleError(error) {
-    console.error('导航错误:', error);
-    showError('页面加载失败，请检查网络连接');
-}
-    // // 实际跳转逻辑（带延迟模拟加载）
-    // setTimeout(() => {
-    //     try {
-    //         // 构建完整路径
-    //         const targetUrl = PATH_CONFIG.base + PATH_CONFIG.pages[pageId];
-            
-    //         // 执行跳转
-    //         window.location.href = targetUrl;
-            
-    //         // 记录访问日志（可选）
-    //         logAccess(pageId);
-            
-    //     } catch (error) {
-    //         handleError(error);
-    //     }
-    // }, 500); // 模拟网络延迟
-        // // 简单的导航函数（可根据需要扩展）
-        // function navigateTo(page) {
-        //     alert(`正在跳转到${page}...`);
-        //     // 这里可以添加实际的导航逻辑
-        //     window.location.href = `yi/index.html`;
-        // }
 
-        // 图片预加载
-        const imgElements = document.querySelectorAll('img');
-        const promises = Array.from(imgElements).map(img => {
-            return new Promise((resolve, reject) => {
-                img.onload = resolve;
-                img.onerror = reject;
-            });
-        });
+    // 触屏没有 hover：点一下展开抽屉；已展开则交给链接自然跳转
+    function toggleDrawer(ev) {
+        if (window.matchMedia('(hover: hover)').matches) return;  // 有鼠标走 CSS hover
+        const d = document.getElementById('drawer');
+        if (!d.classList.contains('open')) {
+            ev.preventDefault();
+            d.classList.add('open');
+        }
+    }
 
-        Promise.all(promises).then(() => {
-            document.body.style.opacity = 1;
-        }).catch(error => {
-            console.error('图片加载失败:', error);
+    // 键盘可达：Enter/空格 触发 role=link/button 的卡片
+    document.querySelectorAll('[role="link"], [role="button"]').forEach(el => {
+        el.addEventListener('keydown', e => {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.click(); }
         });
+    });
+
+    // 首屏淡入：不阻塞在图片上，加载窗口即显示
+    window.addEventListener('load', () => { document.body.style.opacity = 1; });
+    setTimeout(() => { document.body.style.opacity = 1; }, 1500);  // 兜底
     </script>
 </body>
 </html>
-
-
-
-
-
