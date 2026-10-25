@@ -4,137 +4,260 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LIST的小宇宙</title>
+    <meta name="description" content="LIST 的小宇宙：铃兰小姐是我们的光">
     <link rel="icon" type="image/avif" href="../tupian/xiaot.avif">
-    <link rel="stylesheet" href="css/style.css">
     <style>
-    /* 移动端适配补丁（原 style.css 无任何 @media） */
-    @media (max-width: 900px) {
-        /* 左右 fixed 侧栏回归文档流 */
-        .sidebar-card, .function-card {
-            position: static;
-            width: auto;
-            max-width: 420px;
-            margin: 16px auto;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            justify-content: center;
-        }
-        .function-card { order: 3; }
-        .function-item { width: auto; }
-        .function-tooltip { display: none; }   /* 触屏无 hover，提示无意义 */
+    :root {
+        --night: #0c1220;
+        --glass: rgba(12, 18, 32, .5);
+        --line: rgba(255, 224, 178, .25);
+        --gold: #ffd98e;
+        --text: #f3ede0;
+        --dim: rgba(243, 237, 224, .75);
+    }
+    * { margin:0; padding:0; box-sizing:border-box;
+        transition: opacity .3s ease, transform .3s ease, background-color .3s ease; }
 
-        .welcome-container {
-            height: 46vh;
-            background-attachment: scroll;
-        }
-        .welcome-text { font-size: 2rem; }
+    body {
+        font-family: 'Segoe UI', 'Noto Sans CJK SC', system-ui, sans-serif;
+        color: var(--text);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        /* 背景：明日方舟 铃兰 动图 */
+        background: linear-gradient(rgba(6,10,20,.55), rgba(6,10,20,.4)),
+                    url('../tupian/suzuran-bg.webp') center / cover no-repeat fixed;
+        animation: breathe 14s ease-in-out infinite alternate;
+    }
+    @keyframes breathe {
+        from { filter: brightness(1); }
+        to   { filter: brightness(1.1); }
+    }
 
-        .content {
-            top: 0;
-            padding: 1rem;
-            margin: 0 auto;
-            max-width: 640px;
-        }
+    /* 顶部抽屉导航 */
+    .drawer {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 12px;
+        background: var(--glass);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--line);
+    }
+    .drawer a {
+        color: var(--dim);
+        text-decoration: none;
+        padding: 8px 18px;
+        border-radius: 20px;
+        font-size: .95rem;
+        border: 1px solid transparent;
+    }
+    .drawer a:hover {
+        color: var(--gold);
+        border-color: var(--line);
+        background: rgba(255, 217, 142, .08);
+    }
 
-        /* 抽屉：顶部滑入改为常驻顶部横条 */
-        .drawer {
-            position: static;
-            top: 0;
-            display: flex;
-            justify-content: center;
-            gap: 4px;
-            padding: 8px;
-        }
+    /* 用户卡 */
+    .me {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        padding: 34px 20px 6px;
+        text-align: left;
+    }
+    .me img.avatar {
+        width: 76px; height: 76px;
+        border-radius: 50%;
+        border: 3px solid var(--gold);
+        box-shadow: 0 4px 18px rgba(0,0,0,.5);
+        object-fit: cover;
+    }
+    .me h1 { font-size: 1.35rem; letter-spacing: .1em; }
+    .me p  { color: var(--dim); font-size: .88rem; margin-top: 4px; }
 
-        .copyright-box {
-            position: static;
-            text-align: center;
-            padding: 16px 0;
-        }
+    /* 欢迎语 */
+    .hero {
+        text-align: center;
+        padding: 18px 20px 26px;
+    }
+    .hero .welcome {
+        font-size: clamp(2rem, 6vw, 3rem);
+        letter-spacing: .3em;
+        text-shadow: 0 2px 24px rgba(0,0,0,.6);
+    }
+    .quote-line {
+        margin-top: 12px;
+        color: var(--gold);
+        font-size: 1rem;
+        min-height: 1.6em;
+        letter-spacing: .06em;
+    }
+    .quote-line::after { content: '▍'; animation: blink 1s steps(1) infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* 内容卡片 */
+    .content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 18px;
+        max-width: 1080px;
+        width: 100%;
+        margin: 0 auto;
+        padding: 20px 20px 60px;
+    }
+    .card {
+        background: var(--glass);
+        backdrop-filter: blur(12px);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 22px;
+    }
+    .card h2 { color: var(--gold); font-size: 1.2rem; margin-bottom: 12px; }
+
+    .card blockquote {
+        color: var(--dim);
+        font-size: .95rem;
+        line-height: 1.7;
+        padding: 8px 0 8px 14px;
+        border-left: 3px solid var(--gold);
+        margin-bottom: 10px;
+    }
+
+    .project-card .name { font-size: 1.05rem; margin-bottom: 6px; }
+    .project-card p { color: var(--dim); font-size: .9rem; margin-bottom: 12px; }
+    .project-card a, .more {
+        color: var(--gold);
+        text-decoration: none;
+        font-size: .9rem;
+        border-bottom: 1px solid transparent;
+    }
+    .project-card a:hover, .more:hover { border-bottom-color: var(--gold); }
+
+    /* 小屋：双图 */
+    .gallery { display: flex; gap: 10px; }
+    .gallery img {
+        width: calc(50% - 5px);
+        border-radius: 8px;
+        border: 1px solid var(--line);
+        object-fit: cover;
+    }
+    .gallery .lamp { flex: 0 0 calc(50% - 5px); text-align: center; }
+    .gallery .lamp img { width: 100%; }
+
+    /* 打赏悬浮按钮 */
+    .fab {
+        position: fixed;
+        right: 18px;
+        bottom: 18px;
+        background: var(--glass);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--line);
+        color: var(--gold);
+        text-decoration: none;
+        padding: 10px 16px;
+        border-radius: 24px;
+        font-size: .9rem;
+        z-index: 90;
+    }
+    .fab:hover { background: rgba(24,32,52,.6); }
+
+    footer {
+        text-align: center;
+        color: var(--dim);
+        font-size: .82rem;
+        padding: 16px 0 20px;
+        background: var(--glass);
+        border-top: 1px solid var(--line);
+    }
+    footer a { color: var(--gold); text-decoration: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+        * { animation: none !important; transition: none !important; }
+    }
+    @media (max-width: 700px) {
+        body { background-attachment: scroll; }
+        .me { flex-direction: column; text-align: center; gap: 10px; }
+        .content { grid-template-columns: 1fr; }
     }
     </style>
 </head>
 <body>
-    <!-- 抽屉导航 -->
-    <nav class="drawer" id="drawer">
-        <a href="../index.html" class="drawer-item">主页</a>
-        <a href="#quotes" class="drawer-item">📜 语录集</a>
-        <a href="#game" class="drawer-item">🎮 游戏项目</a>
-        <a href="#custom" class="drawer-item">✨ 小屋</a>
+    <nav class="drawer">
+        <a href="../index.html">主页</a>
+        <a href="#quotes">📜 语录集</a>
+        <a href="#game">🎮 游戏项目</a>
+        <a href="#custom">✨ 小屋</a>
+        <a href="index2.1.html">胡言乱语</a>
     </nav>
 
-    <!-- 用户卡片 -->
-    <div class="sidebar-card">
-        <img src="../tupian/169959361.jpg" alt="用户头像" class="avatar">
-        <h3 class="username">LSIT的博客</h3>
-        <div class="nav-card"><p class="nav-title">界面一</p></div>
-        <div class="nav-card"><p class="nav-title">界面二</p></div>
-        <div class="nav-card active"><p class="nav-title">界面三</p></div>
-    </div>
-
-    <!-- 功能卡片 -->
-    <div class="function-card">
-        <div class="function-item" data-action="toggle-theme">
-            <span>切换主题</span>
-            <div class="function-tooltip">一键切换亮暗主题</div>
-        </div>
-        <div class="function-item" data-action="focus-search">
-            <span>快速搜索</span>
-            <div class="function-tooltip">全站内容搜索</div>
-        </div>
-        <div class="function-item">
-            <a href="Reward.html"><span>打赏喵&gt;_&lt;</span></a>
-            <div class="function-tooltip">请作者喝杯奶茶</div>
+    <div class="me">
+        <img src="../tupian/169959361.jpg" alt="头像" class="avatar">
+        <div>
+            <h1>LSIT 的小宇宙</h1>
+            <p>铃兰小姐是我们的光</p>
         </div>
     </div>
 
-    <!-- 欢迎横幅 -->
-    <div class="welcome-container">
-        <h1 class="welcome-text">欢迎</h1>
-    </div>
-    <div class="quote-list">
-        "代码是写给未来自己的情书"
-        "像素是数字世界的粘土"
-    </div>
+    <section class="hero">
+        <p class="welcome">欢迎</p>
+        <p class="quote-line" id="quote"></p>
+    </section>
 
-    <!-- 内容区域 -->
     <main class="content">
-        <section id="quotes" class="page">
+        <section id="quotes" class="card">
             <h2>📜 语录集</h2>
-            <div class="quotes-container">
-                <blockquote>真正的智慧在于知道自己一无所知</blockquote>
-                <blockquote>代码是诗人写给机器的情书</blockquote>
-            </div>
+            <blockquote>真正的智慧在于知道自己一无所知</blockquote>
+            <blockquote>代码是诗人写给机器的情书</blockquote>
+            <blockquote>像素是数字世界的粘土</blockquote>
         </section>
 
-        <section id="game" class="page">
+        <section id="game" class="card project-card">
             <h2>🎮 游戏项目</h2>
-            <div class="project-card">
-                <h3>访仙</h3>
-                <p>使用 godot 开发的 2D 游戏</p>
-                <a href="indexyouxi.html">看看</a>
-            </div>
+            <p class="name">访仙</p>
+            <p>使用 Godot 开发的 2D 卡牌游戏</p>
+            <a href="indexyouxi.html">看看 →</a>
         </section>
 
-        <section id="custom" class="page">
+        <section id="custom" class="card">
             <h2>✨ 小屋</h2>
-            <div class="custom-content">
-                <blockquote>铃兰小姐是我们的光</blockquote>
+            <blockquote>铃兰小姐是我们的光</blockquote>
+            <div class="gallery">
                 <img src="tupian/1.webp" alt="小屋一" loading="lazy">
                 <img src="tupian/2.webp" alt="小屋二" loading="lazy">
             </div>
         </section>
     </main>
 
-    <div class="copyright-box">
-        <p>© LSIT的博客</p>
-        <p>
-            <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">图片均来自网络</a><br>
-            <a href="https://github.com/lsitvoid" target="_blank" rel="noopener">github 联系我</a>
-        </p>
-    </div>
+    <a class="fab" href="Reward.html">打赏喵&gt;_&lt;</a>
 
-    <script src="script.js"></script>
+    <footer>
+        <p>© LSIT · <a href="https://github.com/lsitvoid" target="_blank" rel="noopener">github 联系我</a> · 图片均来自网络</p>
+    </footer>
+
+    <script>
+    // 语录打字机循环
+    const quotes = [
+        '代码是写给未来自己的情书',
+        '像素是数字世界的粘土',
+        '遇事不决，可问春风',
+        '真正的智慧在于知道自己一无所知'
+    ];
+    const el = document.getElementById('quote');
+    let qi = 0, ci = 0, deleting = false;
+    (function tick() {
+        const q = quotes[qi];
+        el.textContent = q.slice(0, ci);
+        if (!deleting && ci < q.length)      { ci++; setTimeout(tick, 120); }
+        else if (!deleting)                  { deleting = true; setTimeout(tick, 2200); }
+        else if (ci > 0)                     { ci--; setTimeout(tick, 40); }
+        else                                 { deleting = false; qi = (qi+1) % quotes.length; setTimeout(tick, 500); }
+    })();
+    </script>
 </body>
 </html>
