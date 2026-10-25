@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LIST的小宇宙</title>
+    <meta name="description" content="LIST 的小宇宙：铃兰小姐是我们的光">
+    <link rel="icon" type="image/avif" href="tupian/xiaot.avif">
+    <style>
+    :root {
+        --night: #0c1220;
+        --glass: rgba(12, 18, 32, .45);
+        --line: rgba(255, 224, 178, .25);
+        --gold: #ffd98e;
+        --text: #f3ede0;
+        --dim: rgba(243, 237, 224, .72);
+    }
+    * { margin:0; padding:0; box-sizing:border-box;
+        transition: opacity .3s ease, transform .3s ease, background-color .3s ease; }
+
+    body {
+        font-family: 'Segoe UI', 'Noto Sans CJK SC', system-ui, sans-serif;
+        color: var(--text);
+        min-height: 100vh;
+        /* 背景：明日方舟 铃兰 动图（webp 动图 834KB） */
+        background: linear-gradient(rgba(6,10,20,.55), rgba(6,10,20,.35)),
+                    url('tupian/suzuran-bg.webp') center / cover no-repeat fixed;
+        display: flex;
+        flex-direction: column;
+        animation: breathe 14s ease-in-out infinite alternate;
+    }
+    @keyframes breathe {
+        from { filter: brightness(1); }
+        to   { filter: brightness(1.12); }
+    }
+
+    /* 抽屉导航（顶部） */
+    .drawer {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        display: flex;
+        justify-content: center;
+        gap: 6px;
+        padding: 12px;
+        background: var(--glass);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--line);
+    }
+    .drawer a {
+        color: var(--dim);
+        text-decoration: none;
+        padding: 8px 18px;
+        border-radius: 20px;
+        font-size: .95rem;
+        border: 1px solid transparent;
+    }
+    .drawer a:hover {
+        color: var(--gold);
+        border-color: var(--line);
+        background: rgba(255, 217, 142, .08);
+    }
+
+    /* 欢迎区 */
+    .hero {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 60px 20px 30px;
+    }
+    .hero h1 {
+        font-size: clamp(2.4rem, 7vw, 4.2rem);
+        letter-spacing: .18em;
+        text-shadow: 0 2px 24px rgba(0,0,0,.6);
+        margin-bottom: 14px;
+    }
+    .hero .sub {
+        color: var(--dim);
+        font-size: 1.05rem;
+        letter-spacing: .1em;
+        margin-bottom: 8px;
+    }
+    .hero .sub em { color: var(--gold); font-style: normal; }
+
+    /* 语录打字机 */
+    .quote-line {
+        margin-top: 18px;
+        color: var(--gold);
+        font-size: 1rem;
+        min-height: 1.6em;
+        letter-spacing: .06em;
+    }
+    .quote-line::after {
+        content: '▍';
+        animation: blink 1s steps(1) infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* 卡片区 */
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 18px;
+        max-width: 1060px;
+        width: 100%;
+        margin: 0 auto;
+        padding: 30px 20px 70px;
+    }
+    .card {
+        background: var(--glass);
+        backdrop-filter: blur(12px);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 22px;
+        text-decoration: none;
+        color: var(--text);
+        cursor: pointer;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+        border-color: var(--gold);
+        background: rgba(24, 32, 52, .6);
+    }
+    .card h3 { color: var(--gold); font-size: 1.15rem; margin-bottom: 8px; }
+    .card p  { color: var(--dim); font-size: .9rem; line-height: 1.6; }
+
+    /* 用户卡（头像悬浮在卡片上沿） */
+    .me {
+        position: relative;
+        text-align: center;
+        margin-top: 26px;
+    }
+    .me img.avatar {
+        width: 84px; height: 84px;
+        border-radius: 50%;
+        border: 3px solid var(--gold);
+        box-shadow: 0 4px 18px rgba(0,0,0,.5);
+        object-fit: cover;
+    }
+    .me h2 { font-size: 1.2rem; margin-top: 10px; letter-spacing: .12em; }
+    .me p  { color: var(--dim); font-size: .88rem; margin-top: 4px; }
+
+    footer {
+        text-align: center;
+        color: var(--dim);
+        font-size: .82rem;
+        padding: 18px 0 22px;
+        background: var(--glass);
+        border-top: 1px solid var(--line);
+    }
+    footer a { color: var(--gold); text-decoration: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+        * { animation: none !important; transition: none !important; }
+    }
+    @media (max-width: 700px) {
+        body { background-attachment: scroll; }
+        .drawer { flex-wrap: wrap; padding: 8px; }
+        .drawer a { padding: 6px 12px; font-size: .88rem; }
+        .cards { grid-template-columns: 1fr; }
+    }
+    </style>
+</head>
+<body>
+    <nav class="drawer">
+        <a href="index.html">主页</a>
+        <a href="legacy/index.html">小宇宙</a>
+        <a href="legacy/index2.1.html">胡言乱语</a>
+        <a href="legacy/indexyouxi.html">游戏</a>
+        <a href="https://github.com/lsitvoid" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+
+    <section class="hero">
+        <h1>欢迎来到小宇宙</h1>
+        <p class="sub">铃兰小姐是我们的光 <em>✦</em></p>
+        <p class="quote-line" id="quote"></p>
+    </section>
+
+    <div class="cards">
+        <a class="card" href="legacy/index2.1.html">
+            <h3>胡言乱语</h3>
+            <p>博客：Hello World 合集、红黑树、241 玩具三进制语言。</p>
+        </a>
+        <a class="card" href="legacy/index.html">
+            <h3>小宇宙</h3>
+            <p>语录集、游戏项目访仙、还有给铃兰的小屋。</p>
+        </a>
+        <a class="card" href="legacy/jianlai/index.html">
+            <h3>庆祝剑来</h3>
+            <p>遇事不决，可问春风。</p>
+        </a>
+        <div class="card me">
+            <img src="tupian/169959361.jpg" alt="头像" class="avatar">
+            <h2>LIST</h2>
+            <p>我不喜欢这个世界<br>但我|任然满怀热情</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>© LIST · <a href="https://github.com/lsitvoid" target="_blank" rel="noopener">github.com/lsitvoid</a> · 背景图来自网络</p>
+    </footer>
+
+    <script>
+    // 语录打字机
+    const quotes = [
+        '代码是写给未来自己的情书',
+        '像素是数字世界的粘土',
+        '遇事不决，可问春风',
+        '真正的智慧在于知道自己一无所知'
+    ];
+    const el = document.getElementById('quote');
+    let qi = 0, ci = 0, deleting = false;
+    (function tick() {
+        const q = quotes[qi];
+        el.textContent = q.slice(0, ci);
+        if (!deleting && ci < q.length)      { ci++; setTimeout(tick, 120); }
+        else if (!deleting)                  { deleting = true; setTimeout(tick, 2200); }
+        else if (ci > 0)                     { ci--; setTimeout(tick, 40); }
+        else                                 { deleting = false; qi = (qi+1) % quotes.length; setTimeout(tick, 500); }
+    })();
+    </script>
+</body>
+</html>
