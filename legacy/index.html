@@ -4,137 +4,277 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LIST的小宇宙</title>
+    <meta name="description" content="LIST 的小宇宙：铃兰小姐是我们的光">
     <link rel="icon" type="image/avif" href="../tupian/xiaot.avif">
-    <link rel="stylesheet" href="css/style.css">
     <style>
-    /* 移动端适配补丁（原 style.css 无任何 @media） */
-    @media (max-width: 900px) {
-        /* 左右 fixed 侧栏回归文档流 */
-        .sidebar-card, .function-card {
-            position: static;
-            width: auto;
-            max-width: 420px;
-            margin: 16px auto;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            justify-content: center;
-        }
-        .function-card { order: 3; }
-        .function-item { width: auto; }
-        .function-tooltip { display: none; }   /* 触屏无 hover，提示无意义 */
+    /* 风格参考 antfu.me：暗色、居中窄栏、克制装饰；
+       背景为明日方舟拉普兰德视频，海报帧为铃兰 */
+    :root {
+        --bg: #0b0c0f;
+        --text: #d6d3cd;
+        --dim: #8a8880;
+        --gold: #ffcf7d;
+        --line: rgba(255,255,255,.08);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
 
-        .welcome-container {
-            height: 46vh;
-            background-attachment: scroll;
-        }
-        .welcome-text { font-size: 2rem; }
+    html { background: var(--bg); }
 
-        .content {
-            top: 0;
-            padding: 1rem;
-            margin: 0 auto;
-            max-width: 640px;
-        }
+    body {
+        font-family: 'Noto Sans CJK SC', 'Segoe UI', system-ui, sans-serif;
+        color: var(--text);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        line-height: 1.8;
+    }
 
-        /* 抽屉：顶部滑入改为常驻顶部横条 */
-        .drawer {
-            position: static;
-            top: 0;
-            display: flex;
-            justify-content: center;
-            gap: 4px;
-            padding: 8px;
-        }
+    /* 背景视频层：压暗保证文字可读 */
+    .bg-video {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -2;
+        filter: brightness(.38) saturate(1.05);
+    }
+    /* 视频不可用时的兜底：铃兰动图 */
+    .bg-fallback {
+        position: fixed;
+        inset: 0;
+        background: url('../tupian/suzuran-bg.webp') center / cover no-repeat;
+        filter: brightness(.4);
+        z-index: -3;
+    }
+    /* 顶部与底部的暗角，聚焦中央内容 */
+    .bg-vignette {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        background:
+            linear-gradient(rgba(11,12,15,.55), rgba(11,12,15,.15) 30%, rgba(11,12,15,.15) 65%, rgba(11,12,15,.7));
+    }
 
-        .copyright-box {
-            position: static;
-            text-align: center;
-            padding: 16px 0;
-        }
+    nav.top {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 4px;
+        padding: 18px 12px;
+    }
+    nav.top a {
+        color: var(--dim);
+        text-decoration: none;
+        font-size: .95rem;
+        padding: 6px 14px;
+        border-radius: 8px;
+        transition: color .2s, background-color .2s;
+    }
+    nav.top a:hover { color: var(--gold); background: rgba(255,207,125,.07); }
+
+    .wrap {
+        max-width: 640px;
+        width: 100%;
+        margin: 0 auto;
+        padding: 0 24px;
+        flex: 1;
+    }
+
+    header.hero { padding: 9vh 0 8vh; text-align: left; }
+    .hero .kicker {
+        color: var(--gold);
+        font-size: .85rem;
+        letter-spacing: .35em;
+        margin-bottom: 14px;
+    }
+    .hero h1 {
+        font-size: clamp(2.2rem, 6vw, 3.2rem);
+        font-weight: 700;
+        line-height: 1.25;
+        letter-spacing: .04em;
+    }
+    .hero h1 em {
+        font-style: normal;
+        background: linear-gradient(120deg, #ffcf7d, #ff9d5c);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+    .hero .sub { color: var(--dim); margin-top: 14px; font-size: 1rem; }
+
+    /* 语录打字机 */
+    .quote-line {
+        margin-top: 20px;
+        color: var(--text);
+        font-size: .98rem;
+        min-height: 1.8em;
+    }
+    .quote-line::before { content: '“ '; color: var(--gold); }
+    .quote-line::after  { content: ' ▍'; color: var(--gold); animation: blink 1s steps(1) infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* 栏目列表：antfu 式极简列表，非卡片堆砌 */
+    section { border-top: 1px solid var(--line); padding: 34px 0; }
+    section h2 {
+        font-size: .95rem;
+        color: var(--dim);
+        font-weight: 400;
+        letter-spacing: .2em;
+        margin-bottom: 18px;
+    }
+    .row {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 10px 0;
+        text-decoration: none;
+        color: var(--text);
+        border-bottom: 1px dashed transparent;
+        transition: border-color .2s;
+    }
+    .row:hover { border-bottom-color: var(--gold); }
+    .row .name { font-size: 1.08rem; }
+    .row .name .tag {
+        color: var(--gold);
+        font-size: .8rem;
+        margin-left: 8px;
+    }
+    .row .desc { color: var(--dim); font-size: .9rem; text-align: right; }
+
+    .gallery { display: flex; gap: 12px; margin-top: 8px; }
+    .gallery img {
+        width: calc(50% - 6px);
+        border-radius: 10px;
+        border: 1px solid var(--line);
+    }
+
+    blockquote {
+        color: var(--dim);
+        padding-left: 14px;
+        border-left: 2px solid var(--gold);
+        margin-bottom: 12px;
+        font-size: .95rem;
+    }
+
+    .fab {
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        color: var(--gold);
+        text-decoration: none;
+        font-size: .9rem;
+        border: 1px solid rgba(255,207,125,.35);
+        border-radius: 24px;
+        padding: 9px 18px;
+        background: rgba(11,12,15,.55);
+        backdrop-filter: blur(8px);
+        transition: background-color .2s;
+        z-index: 50;
+    }
+    .fab:hover { background: rgba(255,207,125,.12); }
+
+    footer {
+        text-align: center;
+        color: var(--dim);
+        font-size: .82rem;
+        padding: 22px 0 26px;
+    }
+    footer a { color: var(--gold); text-decoration: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+        .bg-video { display: none; }   /* 省流动效：只留铃兰静图 */
+        .quote-line::after { animation: none; }
+    }
+    @media (max-width: 600px) {
+        header.hero { padding: 6vh 0 6vh; }
+        .row { flex-direction: column; gap: 2px; }
+        .row .desc { text-align: left; }
+        .gallery { flex-direction: column; }
+        .gallery img { width: 100%; }
     }
     </style>
 </head>
 <body>
-    <!-- 抽屉导航 -->
-    <nav class="drawer" id="drawer">
-        <a href="../index.html" class="drawer-item">主页</a>
-        <a href="#quotes" class="drawer-item">📜 语录集</a>
-        <a href="#game" class="drawer-item">🎮 游戏项目</a>
-        <a href="#custom" class="drawer-item">✨ 小屋</a>
+    <div class="bg-fallback"></div>
+    <video class="bg-video" autoplay muted loop playsinline
+           poster="../tupian/suzuran-bg.webp"
+           onerror="this.style.display='none'">
+        <source src="media/lapland-bg.mp4" type="video/mp4">
+    </video>
+    <div class="bg-vignette"></div>
+
+    <nav class="top">
+        <a href="../index.html">主页</a>
+        <a href="#quotes">语录</a>
+        <a href="#game">游戏</a>
+        <a href="#custom">小屋</a>
+        <a href="index2.1.html">博客</a>
+        <a href="https://github.com/lsitvoid" target="_blank" rel="noopener">GitHub</a>
     </nav>
 
-    <!-- 用户卡片 -->
-    <div class="sidebar-card">
-        <img src="../tupian/169959361.jpg" alt="用户头像" class="avatar">
-        <h3 class="username">LSIT的博客</h3>
-        <div class="nav-card"><p class="nav-title">界面一</p></div>
-        <div class="nav-card"><p class="nav-title">界面二</p></div>
-        <div class="nav-card active"><p class="nav-title">界面三</p></div>
-    </div>
+    <div class="wrap">
+        <header class="hero">
+            <p class="kicker">LIST 的 小 宇 宙</p>
+            <h1>铃兰小姐<br>是我们的<em>光</em>。</h1>
+            <p class="sub">记录代码、游戏，和一些想说给世界听的话。</p>
+            <p class="quote-line" id="quote"></p>
+        </header>
 
-    <!-- 功能卡片 -->
-    <div class="function-card">
-        <div class="function-item" data-action="toggle-theme">
-            <span>切换主题</span>
-            <div class="function-tooltip">一键切换亮暗主题</div>
-        </div>
-        <div class="function-item" data-action="focus-search">
-            <span>快速搜索</span>
-            <div class="function-tooltip">全站内容搜索</div>
-        </div>
-        <div class="function-item">
-            <a href="Reward.html"><span>打赏喵&gt;_&lt;</span></a>
-            <div class="function-tooltip">请作者喝杯奶茶</div>
-        </div>
-    </div>
-
-    <!-- 欢迎横幅 -->
-    <div class="welcome-container">
-        <h1 class="welcome-text">欢迎</h1>
-    </div>
-    <div class="quote-list">
-        "代码是写给未来自己的情书"
-        "像素是数字世界的粘土"
-    </div>
-
-    <!-- 内容区域 -->
-    <main class="content">
-        <section id="quotes" class="page">
+        <section id="quotes">
             <h2>📜 语录集</h2>
-            <div class="quotes-container">
-                <blockquote>真正的智慧在于知道自己一无所知</blockquote>
-                <blockquote>代码是诗人写给机器的情书</blockquote>
-            </div>
+            <blockquote>真正的智慧在于知道自己一无所知</blockquote>
+            <blockquote>代码是诗人写给机器的情书</blockquote>
+            <blockquote>像素是数字世界的粘土</blockquote>
         </section>
 
-        <section id="game" class="page">
+        <section id="game">
             <h2>🎮 游戏项目</h2>
-            <div class="project-card">
-                <h3>访仙</h3>
-                <p>使用 godot 开发的 2D 游戏</p>
-                <a href="indexyouxi.html">看看</a>
-            </div>
+            <a class="row" href="indexyouxi.html">
+                <span class="name">访仙 <span class="tag">Godot</span></span>
+                <span class="desc">2D 卡牌游戏 →</span>
+            </a>
+            <a class="row" href="indexyou.html">
+                <span class="name">游戏页</span>
+                <span class="desc">更多玩具 →</span>
+            </a>
         </section>
 
-        <section id="custom" class="page">
+        <section id="custom">
             <h2>✨ 小屋</h2>
-            <div class="custom-content">
-                <blockquote>铃兰小姐是我们的光</blockquote>
+            <blockquote>这里放着喜欢的东西</blockquote>
+            <div class="gallery">
                 <img src="tupian/1.webp" alt="小屋一" loading="lazy">
                 <img src="tupian/2.webp" alt="小屋二" loading="lazy">
             </div>
         </section>
-    </main>
-
-    <div class="copyright-box">
-        <p>© LSIT的博客</p>
-        <p>
-            <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">图片均来自网络</a><br>
-            <a href="https://github.com/lsitvoid" target="_blank" rel="noopener">github 联系我</a>
-        </p>
     </div>
 
-    <script src="script.js"></script>
+    <a class="fab" href="Reward.html">打赏喵&gt;_&lt;</a>
+
+    <footer>
+        <p>© LSIT · <a href="https://github.com/lsitvoid" target="_blank" rel="noopener">github.com/lsitvoid</a> · 背景图视频来自网络</p>
+    </footer>
+
+    <script>
+    // 语录打字机循环
+    const quotes = [
+        '代码是写给未来自己的情书',
+        '像素是数字世界的粘土',
+        '遇事不决，可问春风',
+        '真正的智慧在于知道自己一无所知'
+    ];
+    const el = document.getElementById('quote');
+    let qi = 0, ci = 0, deleting = false;
+    (function tick() {
+        const q = quotes[qi];
+        el.textContent = q.slice(0, ci);
+        if (!deleting && ci < q.length)      { ci++; setTimeout(tick, 120); }
+        else if (!deleting)                  { deleting = true; setTimeout(tick, 2200); }
+        else if (ci > 0)                     { ci--; setTimeout(tick, 40); }
+        else                                 { deleting = false; qi = (qi+1) % quotes.length; setTimeout(tick, 500); }
+    })();
+    </script>
 </body>
 </html>

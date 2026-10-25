@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>241 语言 · LIST 的博客</title>
+    <link rel="icon" type="image/avif" href="../tupian/xiaot.avif">
+    <style>
+    :root { --paper:#fffdf7; --ink:#323230; --faded:#8c8a80; --accent:#c2571c; --rule:#e4e0d4; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:var(--paper); color:var(--ink);
+           font-family:Georgia,'Noto Serif CJK SC','Songti SC',serif;
+           font-size:1.1rem; line-height:1.85; padding:0 24px; }
+    .page { max-width:700px; margin:0 auto; padding:48px 0 64px; }
+    header.masthead { text-align:center; padding-bottom:28px;
+        border-bottom:3px double var(--rule); margin-bottom:40px; }
+    .masthead h1 a { color:var(--ink); text-decoration:none; font-size:1.9rem; letter-spacing:.1em; }
+    .masthead .sub { color:var(--faded); font-size:.9rem; margin-top:6px; }
+    .masthead nav { margin-top:14px; font-size:.95rem; }
+    .masthead nav a { color:var(--accent); text-decoration:none; margin:0 10px; }
+    .post-meta { color:var(--faded); font-size:.88rem; margin-bottom:8px; }
+    article h1 { font-size:1.7rem; line-height:1.4; margin-bottom:20px; }
+    article h2 { font-size:1.3rem; margin:1.8em 0 .6em; }
+    article h3 { font-size:1.1rem; margin:1.4em 0 .5em; }
+    article p { margin:0 0 1.1em; }
+    article ul, article ol { margin:0 0 1.1em 1.6em; }
+    article li { margin-bottom:.3em; }
+    article blockquote { margin:1.2em 0; padding:.2em 1.1em;
+        border-left:3px solid var(--accent); color:#56544c; }
+    article a { color:var(--accent); }
+    code { font-family:ui-monospace,Menlo,Consolas,monospace; }
+    p code, li code { background:#f1eee4; padding:.1em .35em; border-radius:3px; font-size:.86em; }
+    pre { background:#f1eee4; padding:14px 16px; overflow-x:auto;
+          font-size:.88rem; line-height:1.6; margin:0 0 1.2em; border-radius:4px; }
+    pre code { background:none; }
+    article table { border-collapse:collapse; margin:0 0 1.2em; font-size:.95rem; width:100%; }
+    article th, article td { border:1px solid var(--rule); padding:6px 12px; text-align:left; }
+    article th { background:#f1eee4; }
+    footer { text-align:center; color:var(--faded); font-size:.88rem; margin-top:48px; }
+    footer a { color:var(--accent); text-decoration:none; }
+    @media (max-width:600px) { body{font-size:1.02rem;padding:0 16px;} .page{padding:28px 0 44px;} }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header class="masthead">
+            <h1><a href="index2.1.html">胡言乱语</a></h1>
+            <p class="sub">LIST 的博客 — 想到什么写什么</p>
+            <nav>
+                <a href="../index.html">主页</a>
+                <a href="index2.1.html">栏目</a>
+                <a href="https://github.com/lsitvoid" target="_blank" rel="noopener">GitHub</a>
+            </nav>
+        </header>
+
+        <article>
+            <p class="post-meta">栏目 · 玩具语言</p>
+            <h1>241：一门三进制玩具语言</h1>
+
+            <p>规则只有一条：<strong>指令集里只能出现 2、4、1 三个数字。</strong>
+            用这套约束设计一台栈机的指令集——相当于在 handcuffs 里写汇编。</p>
+
+            <h2>第一步：把 2、4、1 映射成三进制</h2>
+            <p>三个数字按大小映射到三进制的一位：</p>
+            <pre><code>1 → 0    2 → 1    4 → 2
+指令 = 三位三进制数，共 3³ = 27 条</code></pre>
+
+            <h2>指令集草案</h2>
+            <table>
+                <tr><th>编码（241写法）</th><th>三进制</th><th>含义</th></tr>
+                <tr><td>111</td><td>000</td><td>NOP 空操作</td></tr>
+                <tr><td>112</td><td>001</td><td>ADD 加法</td></tr>
+                <tr><td>114</td><td>002</td><td>SUB 减法</td></tr>
+                <tr><td>121</td><td>010</td><td>MUL 乘法</td></tr>
+                <tr><td>122</td><td>011</td><td>DIV 除法</td></tr>
+                <tr><td>212</td><td>101</td><td>PUSH 取栈顶</td></tr>
+                <tr><td>241</td><td>?</td><td>HALT 停机</td></tr>
+            </table>
+            <p>27 条指令对一台栈机绰绰有余：算术 6 条、栈操作 4 条、跳转 6 条、
+            IO 3 条，剩下的全是余量。</p>
+
+            <h2>查资料后才发现：这条路苏联人真走通过</h2>
+            <p>这不是异想天开——<strong>三进制计算机历史上真实存在</strong>：</p>
+            <ul>
+                <li><strong>Сетунь（Setun，1958）</strong>：莫斯科大学 Брусенцов 团队研制，
+                是世界上唯一一台量产的三进制计算机，一共造了约 50 台。
+                用的是<strong>平衡三进制</strong>：每位取 -1、0、+1</li>
+                <li>Setun 的结论：平衡三进制下<strong>负数天然免符号位</strong>，
+                取反就是逐位取反，舍入只需截断——比二进制的补码机制优雅得多</li>
+                <li>它便宜、可靠，但没有走出苏联，1970 年后停产，方案随之失传</li>
+            </ul>
+
+            <blockquote>设计 241 时我凭直觉给 241 编码留了个特殊位置，
+            后来看到 Setun 的资料才意识到：当年他们也在纠结「哪条指令值得最短的编码」。</blockquote>
+
+            <h2>为什么三进制在数学上更划算</h2>
+            <p>一个冷知识：进位制的底数存在<strong>经济学最优解</strong>。
+            若底数为 r，表示一个数需要 r 种电路状态 × log_r(N) 位。
+            对「状态成本 × 位数成本」求极值，最优底数是
+            <strong>e ≈ 2.718</strong>——整数里 3 比 2 更接近 e。</p>
+            <p>换算成性价比：表示 0..10000 这个范围，</p>
+            <ul>
+                <li>二进制：14 位 × 2 态 = 28 个状态单元</li>
+                <li>三进制：9 位 × 3 态 = 27 个状态单元</li>
+            </ul>
+            <p>三进制总是更省一点点——Setun 的设计报告里算过同一笔账。</p>
+
+            <h2>下一步</h2>
+            <p>把 241 的 27 条指令写成一门<strong>平衡三进制</strong>的变体：
+            每位取 {-1, 0, 1}，再写一个解释器跑通「加法器 → 斐波那契」。
+            如果哪天真写了，更新在这一页。</p>
+
+            <p>相关阅读：<a href="hongheishu.html">红黑树</a>——
+            同样是「在约束里找秩序」的练习。</p>
+        </article>
+
+        <footer>
+            <p>© LIST · <a href="https://github.com/lsitvoid" target="_blank" rel="noopener">github.com/lsitvoid</a></p>
+        </footer>
+    </div>
+</body>
+</html>
