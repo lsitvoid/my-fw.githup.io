@@ -257,7 +257,10 @@
     function navigateTo(pageId) {
         const path = PATH_CONFIG.pages[pageId];
         if (!path) return;
-        window.location.href = PATH_CONFIG.base + path;
+        const url = PATH_CONFIG.base + path;
+        // 优先走 pjax 换体：跨页不断播
+        if (window.__spjax) { window.spjaxTo(url); return; }
+        window.location.href = url;
     }
 
     // 触屏没有 hover：点一下展开抽屉；已展开则交给链接自然跳转
@@ -281,6 +284,7 @@
     window.addEventListener('load', () => { document.body.style.opacity = 1; });
     setTimeout(() => { document.body.style.opacity = 1; }, 1500);  // 兜底
     </script>
+    <script src="legacy/media/siren-pjax.js"></script>
     <script src="legacy/media/siren-player.js"></script>
 </body>
 </html>
